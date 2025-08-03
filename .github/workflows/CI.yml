@@ -27,7 +27,7 @@ jobs:
       - name: Restore application-prod.yml from Secret
         run: |
           mkdir -p src/main/resources
-          echo "${{ secrets.APPLICATION_YML }}" | base64 -d > src/main/resources/application-prod.yml
+          echo "${{ secrets.APPLICATION_YML }}" > src/main/resources/application-prod.yml
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
