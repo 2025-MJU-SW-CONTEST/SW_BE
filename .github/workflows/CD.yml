@@ -20,15 +20,15 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           port: 22
           script: |
-            IMAGE_URL="${{ secrets.ECR_PUBLIC_URL }}"
-            IMAGE_TAG="latest"
+            mkdir -p ~/sw_be_deploy
+            cd ~/sw_be_deploy
 
-            docker stop sw-be-app || true
-            docker rm sw-be-app || true
+            echo "${{ secrets.DOCKER_COMPOSE_YML }}" > docker-compose.yml
 
             aws ecr-public get-login-password --region us-east-1 \
-            | docker login --username AWS --password-stdin public.ecr.aws
+              | docker login --username AWS --password-stdin public.ecr.aws
 
-            docker pull $IMAGE_URL:$IMAGE_TAG
+            docker compose pull app
 
-            docker run -d --name sw-be-app -p 8080:8080 $IMAGE_URL:$IMAGE_TAG
+            docker compose down
+            docker compose up -d
