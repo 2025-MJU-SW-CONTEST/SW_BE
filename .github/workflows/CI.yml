@@ -26,7 +26,7 @@ jobs:
           APPLICATION_YML: ${{ secrets.APPLICATION_YML }}
         run: |
           mkdir -p src/main/resources
-          echo "$APPLICATION_YML" > src/main/resources/application.yml
+          printf "%s" "$APPLICATION_YML" > src/main/resources/application.yml
           
       - name: Build Spring Boot JAR
         run: ./gradlew bootJar
