@@ -21,10 +21,12 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           
-      - name: Restore application-prod.yml from Secret
+      - name: Set up application.yml
+        env:
+          APPLICATION_YML: ${{ secrets.APPLICATION_YML }}
         run: |
           mkdir -p src/main/resources
-          echo "${{ secrets.APPLICATION_YML }}" > src/main/resources/application.yml
+          echo "$APPLICATION_YML" > src/main/resources/application.yml
           
       - name: Build Spring Boot JAR
         run: ./gradlew bootJar
