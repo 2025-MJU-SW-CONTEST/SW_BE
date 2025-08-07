@@ -32,7 +32,7 @@ public class AuthService {
 
         if(optional.isPresent()) {
             User user= optional.get();
-            String token = jwtUtil.createJwt(user, 60 * 60 * 10L);
+            String token = jwtUtil.createJwt(user, 60 * 60 * 1000L);
             httpServletResponse.setHeader("Authorization", token);
             return new UserResponse(user,true);
         }
