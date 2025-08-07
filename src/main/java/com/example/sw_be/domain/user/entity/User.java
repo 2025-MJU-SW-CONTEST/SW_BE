@@ -1,13 +1,16 @@
 package com.example.sw_be.domain.user.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.example.sw_be.domain.analysis.entity.Analysis;
+import com.example.sw_be.domain.review.entity.Review;
+import com.example.sw_be.domain.userChatRoom.entity.UserChatRoom;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -24,5 +27,14 @@ public class User {
     private String profileImg;
     private String role;
     private String password;
+
+    @OneToMany(mappedBy = "user")
+    private List<UserChatRoom> userChatRooms = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Review> reviews = new ArrayList<>();
+
+    @OneToOne(mappedBy = "user")
+    private Analysis analysis;
 
 }
