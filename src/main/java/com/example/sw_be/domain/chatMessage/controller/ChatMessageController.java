@@ -5,10 +5,9 @@ import com.example.sw_be.domain.chatMessage.entity.ChatMessage;
 import com.example.sw_be.domain.chatMessage.service.ChatMessageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,5 +24,11 @@ public class ChatMessageController {
                 request.getMessage()
         );
         return ResponseEntity.ok(saved);
+    }
+
+    @GetMapping("/messages")
+    public ResponseEntity<List<ChatMessage>> getMessages(@RequestParam String chatroomId) {
+        List<ChatMessage> messages = chatMessageService.getMessages(chatroomId);
+        return ResponseEntity.ok(messages);
     }
 }
