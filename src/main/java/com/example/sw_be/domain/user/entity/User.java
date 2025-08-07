@@ -1,5 +1,6 @@
 package com.example.sw_be.domain.user.entity;
 
+
 import com.example.sw_be.domain.analysis.entity.Analysis;
 import com.example.sw_be.domain.review.entity.Review;
 import com.example.sw_be.domain.userChatRoom.entity.UserChatRoom;
