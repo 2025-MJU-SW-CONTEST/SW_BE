@@ -6,12 +6,20 @@ import com.example.sw_be.domain.movieCast.entity.MovieCast;
 import com.example.sw_be.domain.movieGenre.entity.MovieGenre;
 import com.example.sw_be.domain.review.entity.Review;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Movie {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
