@@ -30,7 +30,9 @@ public class SecurityConfig {
             "/api/v1/replies/**",
             "/auth/login",
             "/auth/login/kakao/**",
-            "/auth/signup"
+            "/auth/signup",
+            "/ws-chat/*",
+            "/login"
     };
 
     @Bean

@@ -51,6 +51,11 @@ dependencies {
     //Webflux
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
+    //Mongo
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+
+    //WebSocket
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
 }
 
 tasks.named('test') {
