@@ -1,25 +1,24 @@
-package com.example.sw_be.domain.chatMessage.entity;
+package com.example.sw_be.domain.chat.entity;
 
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
-@Document(collection = "chat_messages")
-@Getter
-@Builder
-@NoArgsConstructor
+@Document(collection = "chatMessages")
 @AllArgsConstructor
-public class ChatMessage {
-
+@NoArgsConstructor
+@Builder
+@Data
+public class ChatMessageDocument {
     @Id
     private String id;
-    private Integer chatroomId;
-    private Integer senderId;
+    private Long chatRoomId;
+    private Long userId;
     private String message;
-    private LocalDateTime date;
+    private LocalDateTime timestamp;
 }

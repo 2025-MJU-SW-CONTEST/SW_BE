@@ -45,5 +45,4 @@ public class Movie {
 
     @OneToOne(mappedBy = "movie")
     private Analysis movieAnalysis;
-
 }
