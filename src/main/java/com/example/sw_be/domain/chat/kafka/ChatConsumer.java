@@ -3,7 +3,7 @@ package com.example.sw_be.domain.chat.kafka;
 import com.example.sw_be.domain.chat.dto.ChatMessage;
 import com.example.sw_be.domain.chat.entity.ChatMessageDocument;
 import com.example.sw_be.domain.chat.repository.ChatMessageRepository;
-import com.example.sw_be.domain.chatroom.repository.ChatRoomRepository;
+import com.example.sw_be.domain.chatRoom.repository.ChatRoomRepository;
 import com.example.sw_be.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

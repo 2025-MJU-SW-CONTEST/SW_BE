@@ -5,7 +5,6 @@ import com.example.sw_be.domain.chatRoom.entity.ChatRoom;
 import com.example.sw_be.domain.movieCast.entity.MovieCast;
 import com.example.sw_be.domain.movieGenre.entity.MovieGenre;
 import com.example.sw_be.domain.review.entity.Review;
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

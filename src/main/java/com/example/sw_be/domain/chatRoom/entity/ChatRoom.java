@@ -1,16 +1,14 @@
 package com.example.sw_be.domain.chatRoom.entity;
 
 import com.example.sw_be.domain.movie.entity.Movie;
-import com.example.sw_be.domain.userChatRoom.entity.UserChatRoom;
+import com.example.sw_be.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -18,15 +16,15 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChatRoom {
-
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private LocalDateTime createdAt;
-
-    @OneToMany(mappedBy = "chatRoom")
-    private List<UserChatRoom> userChatRooms = new ArrayList<>();
 
     @OneToOne
     @JoinColumn(name = "movie_id")
     private Movie movie;
+
+    @ManyToOne @JoinColumn(name = "user_id")
+    private User user;
+
+    private LocalDate date;
 }
