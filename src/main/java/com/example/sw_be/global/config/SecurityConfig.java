@@ -19,8 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JWTUtil jwtUtil;
-    private final UserRepository userRepository;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     public static final String[] ALLOWED_URLS = {
             "/swagger-ui/**",
@@ -30,7 +29,7 @@ public class SecurityConfig {
             "/api/v1/replies/**",
             "/auth/login",
             "/auth/login/kakao/**",
-            "/ws-chat/*",
+            "/ws-chat/**",
     };
 
     @Bean
@@ -42,31 +41,23 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         //csrf disable
-        http
-                .csrf((auth) -> auth.disable());
+        http.csrf((auth) -> auth.disable());
 
         //From 로그인 방식 disable
-        http
-                .formLogin((auth) -> auth.disable());
+        http.formLogin((auth) -> auth.disable());
 
         //HTTP Basic 인증 방식 disable
-        http
-                .httpBasic((auth) -> auth.disable());
+        http.httpBasic((auth) -> auth.disable());
 
 
-        http
-                .addFilterBefore(new JwtAuthenticationFilter(jwtUtil, userRepository), UsernamePasswordAuthenticationFilter.class);
-
-
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         //세션 설정 : STATELESS
-        http
-                .sessionManagement((session) -> session
+        http.sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
 
-        http
-                .authorizeHttpRequests(authorizeRequests ->
+        http.authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers(ALLOWED_URLS).permitAll()  // 허용 URL 설정
                                 .anyRequest().authenticated()  // 그 외 모든 요청은 인증 필요
