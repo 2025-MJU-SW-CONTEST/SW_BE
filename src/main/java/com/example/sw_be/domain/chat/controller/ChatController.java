@@ -4,6 +4,7 @@ import com.example.sw_be.domain.chat.dto.ChatMessage;
 import com.example.sw_be.domain.chat.entity.ChatMessageDocument;
 import com.example.sw_be.domain.chat.service.ChatMessageMongoService;
 import com.example.sw_be.domain.chat.service.ChatService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/chat")
 @RequiredArgsConstructor
+@Tag(name = "Chat", description = "채팅 관련 API")
 public class ChatController {
 
     private final ChatService chatService;
