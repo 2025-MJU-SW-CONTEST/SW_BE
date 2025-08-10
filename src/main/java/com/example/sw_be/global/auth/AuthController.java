@@ -1,6 +1,7 @@
 package com.example.sw_be.global.auth;
 
 import com.example.sw_be.domain.user.dto.request.SignupRequest;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")
+@Tag(name = "Auth", description = "로그인 관련 API")
 public class AuthController {
 
     private final AuthService authService;
