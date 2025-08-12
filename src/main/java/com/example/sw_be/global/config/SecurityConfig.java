@@ -29,6 +29,7 @@ public class SecurityConfig {
             "/api/v1/replies/**",
             "/auth/login",
             "/auth/login/kakao/**",
+            "/auth/signup",
             "/ws-chat/**",
     };
 

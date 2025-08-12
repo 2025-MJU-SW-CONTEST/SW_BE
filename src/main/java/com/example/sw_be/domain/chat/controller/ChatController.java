@@ -33,7 +33,6 @@ public class ChatController {
         return ResponseEntity.ok().build();
     }
 
-
     @MessageMapping("/send/{roomId}")
     @Operation(summary = "소켓 통신 채팅")
     public void sendMessageSocket(@DestinationVariable String roomId, @Payload ChatMessage msg) {
