@@ -13,6 +13,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         // 클라이언트가 연결할 엔드포인트
         registry.addEndpoint("/ws-chat").setAllowedOriginPatterns("*").withSockJS();
+        registry.addEndpoint("/ws-chat").setAllowedOriginPatterns("*");
     }
 
     @Override
@@ -22,4 +23,5 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         // 클라이언트가 /app 으로 보내면 @MessageMapping 핸들러로 라우팅
         registry.setApplicationDestinationPrefixes("/app");
     }
+
 }
