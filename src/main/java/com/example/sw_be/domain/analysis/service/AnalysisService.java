@@ -70,6 +70,7 @@ public class AnalysisService {
 
         if (!analysis.getUser().getUserid().equals(user.getUserid())) throw new AnalysisAccessDeniedException(id);
 
+        analysisRepository.delete(analysis);
     }
 
     public List<AnalysisResponse> getUserAnalysis(User user) {
