@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.kafka.common.protocol.types.Field;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,5 +38,9 @@ public class User {
 
     @OneToOne(mappedBy = "user")
     private Analysis analysis;
+
+    public void chageNickName (String nickName){
+        this.nickName= nickName;
+    }
 
 }
