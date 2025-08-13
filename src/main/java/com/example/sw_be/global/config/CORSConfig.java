@@ -1,8 +1,12 @@
 package com.example.sw_be.global.config;
 
+import com.example.sw_be.global.auth.UserArgumentResolver;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.List;
 
 @Configuration
 public class CORSConfig implements WebMvcConfigurer {
@@ -16,5 +20,10 @@ public class CORSConfig implements WebMvcConfigurer {
                 .allowCredentials(true)
                 .maxAge(3600);
 
+    }
+
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+        resolvers.add(new UserArgumentResolver());
     }
 }
