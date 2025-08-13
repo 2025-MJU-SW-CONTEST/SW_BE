@@ -1,7 +1,5 @@
 package com.example.sw_be.global.config;
 
-import com.example.sw_be.domain.user.repository.UserRepository;
-import com.example.sw_be.global.auth.JWTUtil;
 import com.example.sw_be.global.auth.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
