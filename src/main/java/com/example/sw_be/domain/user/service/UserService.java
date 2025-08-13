@@ -26,4 +26,10 @@ public class UserService {
         userRepository.save(user);
         return new UserResponse(user);
     }
+
+    public void deleteUser(User user) {
+        if(user== null) throw new UnauthenticatedException();
+
+        userRepository.delete(user);
+    }
 }

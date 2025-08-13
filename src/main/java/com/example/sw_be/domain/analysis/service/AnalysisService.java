@@ -10,10 +10,13 @@ import com.example.sw_be.domain.movie.service.MovieService;
 import com.example.sw_be.domain.user.entity.User;
 import com.example.sw_be.global.exception.AnalysisAccessDeniedException;
 import com.example.sw_be.global.exception.AnalysisNotFoundException;
+import com.example.sw_be.global.exception.UnauthenticatedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -24,6 +27,9 @@ public class AnalysisService {
     private final MovieService movieService;
 
     public AnalysisResponse createAnalysis(AnalysisCreateRequest analysisCreateRequest, User user) {
+
+        if(user== null) throw new UnauthenticatedException();
+
         Movie movie= movieService.findByid(analysisCreateRequest.getMovie_id());
         Analysis analysis= Analysis.builder().content(analysisCreateRequest.getContent())
                 .movie(movie)
@@ -33,9 +39,14 @@ public class AnalysisService {
     }
 
     public AnalysisResponse updateAnalysis(AnalysisUpdateRequest analysisUpdateRequest, User user) {
+
+        if(user== null) throw new UnauthenticatedException();
+
         Long id= analysisUpdateRequest.getAnalysis_id();
         Analysis analysis= analysisRepository.findById(id)
                 .orElseThrow(() -> new AnalysisNotFoundException(id));
+
+        if (!analysis.getUser().getUserid().equals(user.getUserid())) throw new AnalysisAccessDeniedException(id);
 
         analysis.update(analysis.getContent());
         return new AnalysisResponse(analysis);
@@ -51,10 +62,22 @@ public class AnalysisService {
 
 
     public void deleteAnalysis(Long id, User user) {
+
+        if(user== null) throw new UnauthenticatedException();
+
         Analysis analysis= analysisRepository.findById(id)
                 .orElseThrow(() -> new AnalysisNotFoundException(id));
 
         if (!analysis.getUser().getUserid().equals(user.getUserid())) throw new AnalysisAccessDeniedException(id);
 
+    }
+
+    public List<AnalysisResponse> getUserAnalysis(User user) {
+        List<Analysis> analyses= analysisRepository.findByUser(user);
+        List<AnalysisResponse> responses= new ArrayList<>();
+
+        for (Analysis analysis: analyses) responses.add(new AnalysisResponse(analysis));
+
+        return responses;
     }
 }

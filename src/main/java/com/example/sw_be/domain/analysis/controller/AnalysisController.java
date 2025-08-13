@@ -5,6 +5,7 @@ import com.example.sw_be.domain.analysis.dto.request.AnalysisUpdateRequest;
 import com.example.sw_be.domain.analysis.dto.response.AnalysisResponse;
 import com.example.sw_be.domain.analysis.service.AnalysisService;
 import com.example.sw_be.domain.user.entity.User;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -20,23 +21,27 @@ public class AnalysisController {
     private final AnalysisService analysisService;
 
     @PostMapping("/create")
+    @Operation(summary = "해석 생성")
     public ResponseEntity<AnalysisResponse> createAnalysis(@RequestBody AnalysisCreateRequest analysisCreateRequest,
                                                            @Parameter(hidden = true) User user){
         return ResponseEntity.ok(analysisService.createAnalysis(analysisCreateRequest,user));
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "개별 해석 조회")
     public ResponseEntity<AnalysisResponse> getAnalysis(@PathVariable Long id){
         return ResponseEntity.ok(analysisService.getAnalysis(id));
     }
 
     @PutMapping("/update")
+    @Operation(summary = "해석 수정")
     public ResponseEntity<AnalysisResponse> updateAnalysis(@RequestBody AnalysisUpdateRequest analysisUpdateRequest,
                                                            @Parameter(hidden = true) User user){
         return ResponseEntity.ok(analysisService.updateAnalysis(analysisUpdateRequest,user));
     }
 
     @DeleteMapping("/delete/{id}")
+    @Operation(summary = "헤석 삭제")
     public ResponseEntity<Void> deleteAnalysis(@PathVariable Long id, @Parameter(hidden = true) User user){
         analysisService.deleteAnalysis(id, user);
         return ResponseEntity.noContent().build();
