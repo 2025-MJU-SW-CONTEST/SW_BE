@@ -1,0 +1,60 @@
+package com.example.sw_be.domain.analysis.service;
+
+import com.example.sw_be.domain.analysis.dto.request.AnalysisCreateRequest;
+import com.example.sw_be.domain.analysis.dto.request.AnalysisUpdateRequest;
+import com.example.sw_be.domain.analysis.dto.response.AnalysisResponse;
+import com.example.sw_be.domain.analysis.entity.Analysis;
+import com.example.sw_be.domain.analysis.repository.AnalysisRepository;
+import com.example.sw_be.domain.movie.entity.Movie;
+import com.example.sw_be.domain.movie.service.MovieService;
+import com.example.sw_be.domain.user.entity.User;
+import com.example.sw_be.global.exception.AnalysisAccessDeniedException;
+import com.example.sw_be.global.exception.AnalysisNotFoundException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.Objects;
+
+@Service
+@RequiredArgsConstructor
+public class AnalysisService {
+
+    private final AnalysisRepository analysisRepository;
+    private final MovieService movieService;
+
+    public AnalysisResponse createAnalysis(AnalysisCreateRequest analysisCreateRequest, User user) {
+        Movie movie= movieService.findByid(analysisCreateRequest.getMovie_id());
+        Analysis analysis= Analysis.builder().content(analysisCreateRequest.getContent())
+                .movie(movie)
+                .user(user)
+                .createdAt(LocalDateTime.now()).build();
+        return new AnalysisResponse(analysis);
+    }
+
+    public AnalysisResponse updateAnalysis(AnalysisUpdateRequest analysisUpdateRequest, User user) {
+        Long id= analysisUpdateRequest.getAnalysis_id();
+        Analysis analysis= analysisRepository.findById(id)
+                .orElseThrow(() -> new AnalysisNotFoundException(id));
+
+        analysis.update(analysis.getContent());
+        return new AnalysisResponse(analysis);
+    }
+
+
+    public AnalysisResponse getAnalysis(Long id) {
+        Analysis analysis= analysisRepository.findById(id)
+                .orElseThrow(() -> new AnalysisNotFoundException(id));
+
+        return new AnalysisResponse(analysis);
+    }
+
+
+    public void deleteAnalysis(Long id, User user) {
+        Analysis analysis= analysisRepository.findById(id)
+                .orElseThrow(() -> new AnalysisNotFoundException(id));
+
+        if (!analysis.getUser().getUserid().equals(user.getUserid())) throw new AnalysisAccessDeniedException(id);
+
+    }
+}

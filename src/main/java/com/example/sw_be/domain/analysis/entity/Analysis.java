@@ -31,4 +31,10 @@ public class Analysis {
     private User user;
 
 
+    public void update(String content) {
+        this.content = content;
+        this.createdAt = LocalDateTime.now();
+    }
+
+
 }
