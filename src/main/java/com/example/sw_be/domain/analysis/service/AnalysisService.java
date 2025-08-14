@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +29,7 @@ public class AnalysisService {
 
         if(user== null) throw new UnauthenticatedException();
 
-        Movie movie= movieService.findByid(analysisCreateRequest.getMovie_id());
+        Movie movie= movieService.findById(analysisCreateRequest.getMovie_id());
         Analysis analysis= Analysis.builder().content(analysisCreateRequest.getContent())
                 .movie(movie)
                 .user(user)
