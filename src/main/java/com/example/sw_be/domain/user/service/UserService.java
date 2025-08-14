@@ -18,11 +18,11 @@ public class UserService {
     public UserResponse changeNickname(UserUpdateRequest userUpdateRequest, User user) {
         if(user== null) throw new UnauthenticatedException();
 
-        String newNick= userUpdateRequest.getNickname();
+        String newNick = userUpdateRequest.getNickname();
         if (userRepository.existsByNickName(newNick))
             throw new NicknameDuplicateException(newNick);
 
-        user.changeNickName(user.getNickName());
+        user.changeNickName(newNick);
         userRepository.save(user);
         return new UserResponse(user);
     }
