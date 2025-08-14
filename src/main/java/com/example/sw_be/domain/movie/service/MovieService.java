@@ -7,6 +7,8 @@ import com.example.sw_be.domain.movie.repository.MovieRepository;
 import com.example.sw_be.global.common.PageResponse;
 import com.example.sw_be.global.exception.MovieNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class MovieService {
 
+    private static final Logger log = LoggerFactory.getLogger(MovieService.class);
     private final MovieRepository movieRepository;
 
     public Movie findById(long movieId) {
@@ -30,5 +33,11 @@ public class MovieService {
     public MovieDetailResponse getMovieDetail(Long id) {
         Movie movie = findById(id);
         return MovieDetailResponse.from(movie);
+    }
+
+    public Page<MovieResponse> searchMovies(String keyword, Pageable pageable) {
+        return movieRepository
+                .findByTitleContainingIgnoreCase(keyword, pageable)
+                .map(MovieResponse::from);
     }
 }

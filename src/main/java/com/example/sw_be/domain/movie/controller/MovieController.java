@@ -34,5 +34,15 @@ public class MovieController {
         return ResponseEntity.ok(movieService.getMovieDetail(id));
     }
 
+    @GetMapping("/search")
+    @Operation(summary = "영화 검색", description = "제목 키워드로 영화 검색 (페이지 단위)")
+    public ResponseEntity<PageResponse<MovieResponse>> searchMovies(
+            @RequestParam String keyword,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        Page<MovieResponse> movies = movieService.searchMovies(keyword, PageUtil.noSortPage(page, size));
+        return ResponseEntity.ok(new PageResponse<>(movies));
+    }
 
 }

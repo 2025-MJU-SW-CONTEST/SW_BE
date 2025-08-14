@@ -4,8 +4,6 @@ import com.example.sw_be.domain.movie.entity.Movie;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDate;
-
 @Getter
 @Builder
 public class MovieResponse {
@@ -14,7 +12,6 @@ public class MovieResponse {
     private String title;
     private Float rating;
     private String thumbnailUrl;
-    private LocalDate releaseDate;
 
     public static MovieResponse from(Movie movie) {
         return MovieResponse.builder()
@@ -22,7 +19,6 @@ public class MovieResponse {
                 .title(movie.getTitle())
                 .rating(movie.getRating())
                 .thumbnailUrl(movie.getThumbnailUrl())
-                .releaseDate(movie.getReleaseDate())
                 .build();
     }
 }

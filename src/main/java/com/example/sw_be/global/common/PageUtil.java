@@ -16,4 +16,9 @@ public class PageUtil {
         return PageRequest.of(p, s, Sort.by(Sort.Order.desc(DEFAULT_SORT)));
     }
 
+    public static Pageable noSortPage(Integer page, Integer size) {
+        int p = page == null ? DEFAULT_PAGE : Math.max(0, page);
+        int s = size == null ? DEFAULT_SIZE : Math.max(1, Math.min(size, MAX_SIZE));
+        return PageRequest.of(p, s);
+    }
 }
