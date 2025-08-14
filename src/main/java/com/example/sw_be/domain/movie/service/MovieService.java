@@ -20,7 +20,7 @@ public class MovieService {
                 .orElseThrow(() -> new MovieNotFoundException(movieId));
     }
 
-    public Page<MovieResponse> getMovies(Pageable pageable) {
+    public Page<MovieResponse> getMovieList(Pageable pageable) {
         return movieRepository.findAll(pageable)
                 .map(MovieResponse::from);
     }

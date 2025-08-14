@@ -16,7 +16,7 @@ public class UserService {
 
 
     public UserResponse changeNickname(UserUpdateRequest userUpdateRequest, User user) {
-        if(user== null) throw new UnauthenticatedException();
+        if (user == null) throw new UnauthenticatedException();
 
         String newNick = userUpdateRequest.getNickname();
         if (userRepository.existsByNickName(newNick))
@@ -28,8 +28,7 @@ public class UserService {
     }
 
     public void deleteUser(User user) {
-        if(user== null) throw new UnauthenticatedException();
-
+        if (user == null) throw new UnauthenticatedException();
         userRepository.delete(user);
     }
 }

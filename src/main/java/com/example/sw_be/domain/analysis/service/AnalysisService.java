@@ -5,6 +5,7 @@ import com.example.sw_be.domain.analysis.dto.request.AnalysisUpdateRequest;
 import com.example.sw_be.domain.analysis.dto.response.AnalysisResponse;
 import com.example.sw_be.domain.analysis.entity.Analysis;
 import com.example.sw_be.domain.analysis.repository.AnalysisRepository;
+import com.example.sw_be.domain.movie.dto.MovieResponse;
 import com.example.sw_be.domain.movie.entity.Movie;
 import com.example.sw_be.domain.movie.service.MovieService;
 import com.example.sw_be.domain.user.entity.User;
@@ -12,6 +13,8 @@ import com.example.sw_be.global.exception.AnalysisAccessDeniedException;
 import com.example.sw_be.global.exception.AnalysisNotFoundException;
 import com.example.sw_be.global.exception.UnauthenticatedException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -78,5 +81,10 @@ public class AnalysisService {
         for (Analysis analysis: analyses) responses.add(new AnalysisResponse(analysis));
 
         return responses;
+    }
+
+    public Page<AnalysisResponse> getAnalysisList(Pageable pageable) {
+        return analysisRepository.findAll(pageable)
+                .map(AnalysisResponse::new);
     }
 }
