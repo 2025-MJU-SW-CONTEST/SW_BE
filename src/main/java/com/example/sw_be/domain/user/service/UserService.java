@@ -19,10 +19,10 @@ public class UserService {
         if(user== null) throw new UnauthenticatedException();
 
         String newNick= userUpdateRequest.getNickname();
-        if (userRepository.existsByNickname(newNick))
+        if (userRepository.existsByNickName(newNick))
             throw new NicknameDuplicateException(newNick);
 
-        user.chageNickName(user.getNickName());
+        user.changeNickName(user.getNickName());
         userRepository.save(user);
         return new UserResponse(user);
     }
