@@ -20,7 +20,6 @@ public class ChatConsumer {
     private final UserRepository userRepo;
     private final SimpMessagingTemplate ws;
 
-    @KafkaListener(topics = "chat", groupId = "chat-group")
     public void listen(ChatMessage msg) {
         log.info("[ChatConsumer] 메시지 수신: chatRoomId={}, userId={}, message={}",
                 msg.getChatRoomId(), msg.getUserId(), msg.getMessage());
