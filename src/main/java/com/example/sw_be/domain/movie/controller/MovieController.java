@@ -1,5 +1,6 @@
 package com.example.sw_be.domain.movie.controller;
 
+import com.example.sw_be.domain.movie.dto.MovieDetailResponse;
 import com.example.sw_be.domain.movie.dto.MovieResponse;
 import com.example.sw_be.domain.movie.service.MovieService;
 import com.example.sw_be.global.common.PageResponse;
@@ -9,10 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/movie")
@@ -29,5 +27,12 @@ public class MovieController {
         Page<MovieResponse> movies = movieService.getMovieList(PageUtil.defaultPage(page, size));
         return ResponseEntity.ok(new PageResponse<>(movies));
     }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "영화 상세 조회", description = "영화 ID로 영화 상세 조회")
+    public ResponseEntity<MovieDetailResponse> getMovieDetail(@PathVariable Long id) {
+        return ResponseEntity.ok(movieService.getMovieDetail(id));
+    }
+
 
 }
