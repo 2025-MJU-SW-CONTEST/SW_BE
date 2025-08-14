@@ -38,4 +38,8 @@ public class User {
     @OneToOne(mappedBy = "user")
     private Analysis analysis;
 
+    public void changeNickName(String nickName){
+        this.nickName= nickName;
+    }
+
 }

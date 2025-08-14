@@ -20,4 +20,12 @@ public class UserResponse {
         this.email= user.getEmail();
         this.profileUrl= user.getProfileImg();
     }
+
+    public UserResponse(User user) {
+        this.isRegistered= true;
+        this.id= user.getUserid();
+        this.nickname= user.getNickName();
+        this.email= user.getEmail();
+        this.profileUrl= user.getProfileImg();
+    }
 }
