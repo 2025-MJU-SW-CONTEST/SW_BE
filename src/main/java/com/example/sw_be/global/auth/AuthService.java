@@ -56,7 +56,7 @@ public class AuthService {
                 ).build();
         userRepository.save(newUser);
 
-        String newToken = jwtUtil.createJwt(newUser, 60 * 60 * 10L);
+        String newToken = jwtUtil.createJwt(newUser, 60 * 60 * 1000L);
         httpServletResponse.setHeader("Authorization", newToken);
         return new UserResponse(newUser,true);
     }
