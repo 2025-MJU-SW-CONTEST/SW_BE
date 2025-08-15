@@ -5,6 +5,7 @@ import com.example.sw_be.domain.chat.kafka.ChatProducer;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -14,9 +15,11 @@ import java.time.LocalDateTime;
 public class ChatService {
     private static final Logger log = LoggerFactory.getLogger(ChatService.class);
     private final ChatProducer producer;
+    private final SimpMessagingTemplate messagingTemplate;
 
     public void sendMessage(Long chatRoomId, Long userId, String text) {
         ChatMessage msg = new ChatMessage(chatRoomId, userId, text, LocalDateTime.now());
         producer.send(msg);
+        messagingTemplate.convertAndSend("/topic/chat/" + chatRoomId, msg);
     }
 }
