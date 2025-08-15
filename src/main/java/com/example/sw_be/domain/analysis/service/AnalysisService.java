@@ -84,8 +84,8 @@ public class AnalysisService {
         return responses;
     }
 
-    public Page<AnalysisResponse> getAnalysisList(Pageable pageable) {
-        return analysisRepository.findAll(pageable)
+    public Page<AnalysisResponse> getAnalysisList(Long movieId, Pageable pageable) {
+        return analysisRepository.findByMovieId(movieId, pageable)
                 .map(AnalysisResponse::new);
     }
 }
