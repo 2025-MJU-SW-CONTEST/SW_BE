@@ -53,11 +53,12 @@ public class AnalysisController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/list")
-    @Operation(summary = "해석 리스트 조회", description = "페이지 단위로 해석 리스트 조회")
-    public ResponseEntity<PageResponse<AnalysisResponse>> getMovieList(@RequestParam(defaultValue = "0") int page,
+    @GetMapping("/movie/{id}")
+    @Operation(summary = "영화별 해석 리스트 조회", description = "페이지 단위로 영화별 해석 리스트 조회")
+    public ResponseEntity<PageResponse<AnalysisResponse>> getMovieList(@PathVariable Long id,
+                                                                       @RequestParam(defaultValue = "0") int page,
                                                                        @RequestParam(defaultValue = "10") int size) {
-        Page<AnalysisResponse> analysisList = analysisService.getAnalysisList(PageUtil.defaultPage(page, size));
+        Page<AnalysisResponse> analysisList = analysisService.getAnalysisList(id, PageUtil.defaultPage(page, size));
         return ResponseEntity.ok(new PageResponse<>(analysisList));
     }
 }
