@@ -29,7 +29,7 @@ public class SecurityConfig {
             "/auth/login/kakao/**",
             "/auth/signup",
             "/ws-chat/**",
-            "/api/chatroom/create",
+            "/api/chatroom/create/**",
     };
 
     @Bean
