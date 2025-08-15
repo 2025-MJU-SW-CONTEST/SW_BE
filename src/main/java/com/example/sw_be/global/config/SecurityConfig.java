@@ -29,6 +29,7 @@ public class SecurityConfig {
             "/auth/login/kakao/**",
             "/auth/signup",
             "/ws-chat/**",
+            "/api/chatroom/create/**",
     };
 
     @Bean
