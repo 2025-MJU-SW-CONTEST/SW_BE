@@ -26,8 +26,14 @@ jobs:
           APPLICATION_YML: ${{ secrets.APPLICATION_YML }}
         run: |
           mkdir -p src/main/resources
-          echo ${{secrets.APPLICATION_YML}} | sed 's/./& /g'
           printf "%s" "$APPLICATION_YML" > src/main/resources/application.yml
+      
+      - name: Upload application.yml as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: application-yml
+          path: src/main/resources/application.yml
+          retention-days: 1
           
       - name: Build Spring Boot JAR
         run: ./gradlew bootJar
