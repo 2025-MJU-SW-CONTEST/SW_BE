@@ -12,12 +12,13 @@ import com.example.sw_be.global.exception.AnalysisAccessDeniedException;
 import com.example.sw_be.global.exception.AnalysisNotFoundException;
 import com.example.sw_be.global.exception.UnauthenticatedException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -30,12 +31,13 @@ public class AnalysisService {
 
         if(user== null) throw new UnauthenticatedException();
 
-        Movie movie= movieService.findByid(analysisCreateRequest.getMovie_id());
-        Analysis analysis= Analysis.builder().content(analysisCreateRequest.getContent())
+        Movie movie= movieService.findById(analysisCreateRequest.getMovie_id());
+        Analysis analysis= Analysis.builder()
+                .content(analysisCreateRequest.getContent())
                 .movie(movie)
                 .user(user)
                 .createdAt(LocalDateTime.now()).build();
-        return new AnalysisResponse(analysis);
+        return new AnalysisResponse(analysisRepository.save(analysis));
     }
 
     public AnalysisResponse updateAnalysis(AnalysisUpdateRequest analysisUpdateRequest, User user) {
@@ -70,6 +72,7 @@ public class AnalysisService {
 
         if (!analysis.getUser().getUserid().equals(user.getUserid())) throw new AnalysisAccessDeniedException(id);
 
+        analysisRepository.delete(analysis);
     }
 
     public List<AnalysisResponse> getUserAnalysis(User user) {
@@ -79,5 +82,10 @@ public class AnalysisService {
         for (Analysis analysis: analyses) responses.add(new AnalysisResponse(analysis));
 
         return responses;
+    }
+
+    public Page<AnalysisResponse> getAnalysisList(Long movieId, Pageable pageable) {
+        return analysisRepository.findByMovieId(movieId, pageable)
+                .map(AnalysisResponse::new);
     }
 }
