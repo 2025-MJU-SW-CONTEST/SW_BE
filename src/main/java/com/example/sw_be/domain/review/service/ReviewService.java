@@ -82,7 +82,10 @@ public class ReviewService {
 
     public List<LocalDate> getReviewDatesInMonth(User user, int year, int month) {
         if (user == null) throw new UnauthenticatedException();
-        return reviewRepository.findReviewDatesInMonth(user, year, month);
+        return reviewRepository.findReviewDatesInMonth(user, year, month)
+                .stream()
+                .map(java.sql.Date::toLocalDate)
+                .toList();
     }
 
 }
