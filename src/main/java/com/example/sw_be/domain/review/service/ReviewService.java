@@ -33,7 +33,7 @@ public class ReviewService {
     public ReviewResponse createReview(ReviewCreateRequest reviewCreateRequest, User user) {
         if(user== null) throw new UnauthenticatedException();
 
-        Movie movie= movieService.findByid(reviewCreateRequest.getMovie_id());
+        Movie movie= movieService.findById(reviewCreateRequest.getMovie_id());
 
         Review review= Review.builder().content(reviewCreateRequest.getContent())
                 .rating(reviewCreateRequest.getRating())
