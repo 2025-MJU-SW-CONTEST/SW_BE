@@ -5,11 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
 @Document(collection = "chatMessages")
+@CompoundIndex(def = "{'chatRoomId': 1, 'timestamp': -1, '_id': -1}")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
