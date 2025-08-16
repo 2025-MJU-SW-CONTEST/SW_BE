@@ -20,6 +20,7 @@ public class ChatConsumer {
     private final UserRepository userRepo;
     private final SimpMessagingTemplate ws;
 
+    @KafkaListener(topics = ChatTopics.CHAT_MESSAGES, groupId = "chat-server")
     public void listen(ChatMessage msg) {
         log.info("[ChatConsumer] 메시지 수신: chatRoomId={}, userId={}, message={}",
                 msg.getChatRoomId(), msg.getUserId(), msg.getMessage());
@@ -33,8 +34,8 @@ public class ChatConsumer {
                 .message(msg.getMessage())
                 .timestamp(msg.getTimestamp())
                 .build();
-        mongoRepo.save(doc);
 
-        ws.convertAndSend("/topic/chat/" + msg.getChatRoomId(), msg);
+        ChatMessageDocument savedMsg = mongoRepo.save(doc);
+        ws.convertAndSend("/topic/chat/" + msg.getChatRoomId(), savedMsg);
     }
 }
