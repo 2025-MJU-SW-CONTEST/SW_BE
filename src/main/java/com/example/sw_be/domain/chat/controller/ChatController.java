@@ -49,10 +49,10 @@ public class ChatController {
         return items.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(items);
     }
 
-    @GetMapping("/history/{roomId}/before/{chatId}")
+    @GetMapping("/history/before/{roomId}")
     @Operation(summary = "채팅 과거 히스토리 조회 (마지막 채팅 ID 기준)")
     public ResponseEntity<List<ChatMessageDocument>> getBeforeByChatId(@PathVariable Long roomId,
-                                                                       @PathVariable String chatId) {
+                                                                       @RequestParam String chatId) {
         var items = mongoService.getBeforeByChatId(roomId, chatId);
         return items.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(items);
     }
