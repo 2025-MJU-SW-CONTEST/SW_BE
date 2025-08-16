@@ -34,13 +34,14 @@ public class AuthService {
             User user= optional.get();
             String token = jwtUtil.createJwt(user, 60 * 60 * 1000L);
             httpServletResponse.setHeader("Authorization", token);
+            log.info("token: {}", token);
             return new UserResponse(user,true);
         }
 
         String tmptoken= jwtUtil.createPreRegisterToken(email,10 * 60 * 1000L);
         httpServletResponse.setHeader("Authorization", tmptoken);
+        log.info("tmptoken: {}", tmptoken);
         return new UserResponse(User.builder().profileImg(userInfo.getKakaoAccount().getProfile().getProfileImageUrl()).build(), false);
-
     }
 
 

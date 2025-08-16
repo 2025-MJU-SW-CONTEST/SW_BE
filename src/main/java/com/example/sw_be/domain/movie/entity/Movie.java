@@ -25,6 +25,7 @@ public class Movie {
     @Id
     private Long id;
     private String title;
+    @Column(columnDefinition = "TEXT")
     private String summary;
     private Float rating;
     private Integer duration;
@@ -32,6 +33,7 @@ public class Movie {
     private LocalDate releaseDate;
 
     @OneToMany(mappedBy = "movie")
+    @Builder.Default
     private List<MovieCast> movieCasts = new ArrayList<>();
 
 //    @OneToMany(mappedBy = "movie")
