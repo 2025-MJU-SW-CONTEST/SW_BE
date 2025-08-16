@@ -17,13 +17,11 @@ public class MovieController {
 
     private final MovieService movieService;
 
-    /**
-     * 초기 데이터 삽입용 (테스트용)
-     */
+
     @GetMapping("/init")
     public ResponseEntity<String> initMovies() {
         movieService.insertInitialMovies();
-        return ResponseEntity.ok("Initial movies inserted successfully.");
+        return ResponseEntity.ok("영화 데이터 저장 성공");
     }
 
 
