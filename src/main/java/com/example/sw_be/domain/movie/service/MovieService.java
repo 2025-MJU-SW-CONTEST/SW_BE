@@ -9,11 +9,9 @@ import com.example.sw_be.domain.movieCast.entity.MovieCast;
 import com.example.sw_be.domain.movieCast.service.MovieCastService;
 import com.example.sw_be.global.exception.MovieNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -26,6 +24,7 @@ public class MovieService {
     private final MovieRepository movieRepository;
 //    private final GenreRepository genereRepository;
     private final MovieCastService castService;
+    @Qualifier("tmdbClient")
     private final WebClient tmdbClient;
 
     public Movie findById(long movieId) {

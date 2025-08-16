@@ -5,6 +5,7 @@ import com.example.sw_be.domain.movieCast.dto.MovieCastsResponse;
 import com.example.sw_be.domain.movieCast.entity.MovieCast;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.CredentialHandler;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -16,11 +17,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MovieCastService {
 
-    private final WebClient webClient;
+    @Qualifier("tmdbClient")
+    private final WebClient tmdbClient;
 
     public List<MovieCast> saveCasts(Long id) {
         List<MovieCast> casts= new ArrayList<>();
-        MovieCastsResponse response = webClient
+        MovieCastsResponse response = tmdbClient
                 .get()
                 .uri("/movie/{id}/credits", id)
                 .retrieve()
