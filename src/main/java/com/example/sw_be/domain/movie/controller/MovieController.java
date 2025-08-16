@@ -16,9 +16,17 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/movie")
 @RequiredArgsConstructor
 @Tag(name = "Movie", description = "영화 관련 API")
+
 public class MovieController {
 
     private final MovieService movieService;
+
+
+    @GetMapping("/init")
+    public ResponseEntity<String> initMovies() {
+        movieService.insertInitialMovies();
+        return ResponseEntity.ok("영화 데이터 저장 성공");
+    }
 
     @GetMapping("/list")
     @Operation(summary = "영화 리스트 조회", description = "페이지 단위로 영화 리스트 조회")
@@ -46,3 +54,4 @@ public class MovieController {
     }
 
 }
+

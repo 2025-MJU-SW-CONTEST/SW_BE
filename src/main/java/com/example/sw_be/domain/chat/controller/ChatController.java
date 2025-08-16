@@ -42,12 +42,18 @@ public class ChatController {
     /**
      * 특정 채팅방(roomId)의 MongoDB 저장 채팅 내역 조회(GET)
      */
-    @GetMapping("/history/{roomId}")
-    public ResponseEntity<List<ChatMessageDocument>> getHistory(@PathVariable Long roomId) {
-        List<ChatMessageDocument> history = mongoService.getChatHistory(roomId);
-        if (history.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(history);
+    @GetMapping("/history/recent/{roomId}")
+    @Operation(summary = "채팅 초기 히스토리 조회 (시간 기준)")
+    public ResponseEntity<List<ChatMessageDocument>> getRecentHistory(@PathVariable Long roomId) {
+        var items = mongoService.getRecentHistory(roomId);
+        return items.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(items);
+    }
+
+    @GetMapping("/history/{roomId}/before/{chatId}")
+    @Operation(summary = "채팅 과거 히스토리 조회 (마지막 채팅 ID 기준)")
+    public ResponseEntity<List<ChatMessageDocument>> getBeforeByChatId(@PathVariable Long roomId,
+                                                                       @PathVariable String chatId) {
+        var items = mongoService.getBeforeByChatId(roomId, chatId);
+        return items.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(items);
     }
 }
