@@ -11,4 +11,5 @@ import java.util.List;
 public interface AnalysisRepository extends JpaRepository<Analysis, Long> {
     List<Analysis> findByUser(User user);
     Page<Analysis> findByMovieId(Long movieId, Pageable pageable);
+    boolean existsByMovieIdAndUser(Long movieId, User user);
 }
