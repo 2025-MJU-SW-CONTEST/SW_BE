@@ -26,7 +26,7 @@ public class UserController {
 
     @PutMapping("/nickname")
     @Operation(summary = "닉네임 수정")
-    public ResponseEntity<UserResponse> changeNickname(UserUpdateRequest userUpdateRequest,@Parameter(hidden = true) User user){
+    public ResponseEntity<UserResponse> changeNickname(@RequestBody UserUpdateRequest userUpdateRequest, @Parameter(hidden = true) User user){
         return ResponseEntity.ok(userService.changeNickname(userUpdateRequest, user));
     }
 

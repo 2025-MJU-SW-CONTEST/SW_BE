@@ -16,20 +16,21 @@ public class UserService {
 
 
     public UserResponse changeNickname(UserUpdateRequest userUpdateRequest, User user) {
-        if(user== null) throw new UnauthenticatedException();
+        if (user == null) throw new UnauthenticatedException();
+
 
         String newNick= userUpdateRequest.getNickname();
+      
         if (userRepository.existsByNickName(newNick))
             throw new NicknameDuplicateException(newNick);
 
-        user.chageNickName(user.getNickName());
+        user.changeNickName(newNick);
         userRepository.save(user);
         return new UserResponse(user);
     }
 
     public void deleteUser(User user) {
-        if(user== null) throw new UnauthenticatedException();
-
+        if (user == null) throw new UnauthenticatedException();
         userRepository.delete(user);
     }
 }

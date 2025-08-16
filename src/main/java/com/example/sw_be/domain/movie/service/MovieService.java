@@ -1,7 +1,6 @@
 package com.example.sw_be.domain.movie.service;
 
 import com.example.sw_be.domain.analysis.entity.Analysis;
-import com.example.sw_be.domain.genre.repository.GenreRepository;
 import com.example.sw_be.domain.movie.dto.MovieApiResponse;
 import com.example.sw_be.domain.movie.dto.MovieDetailResponse;
 import com.example.sw_be.domain.movie.dto.MovieResponse;
@@ -9,10 +8,13 @@ import com.example.sw_be.domain.movie.entity.Movie;
 import com.example.sw_be.domain.movie.repository.MovieRepository;
 import com.example.sw_be.domain.movieCast.entity.MovieCast;
 import com.example.sw_be.domain.movieCast.service.MovieCastService;
-import com.example.sw_be.domain.movieGenre.entity.MovieGenre;
 import com.example.sw_be.global.exception.MovieNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import com.example.sw_be.global.common.PageResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -23,6 +25,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MovieService {
 
+    private static final Logger log = LoggerFactory.getLogger(MovieService.class);
     private final MovieRepository movieRepository;
 //    private final GenreRepository genereRepository;
     private final MovieCastService castService;
@@ -36,13 +39,22 @@ public class MovieService {
             .build();
 
 
-    public Movie findByid(long movieId) {
+    public Movie findById(long movieId) {
         return movieRepository.findById(movieId)
                 .orElseThrow(() -> new MovieNotFoundException(movieId));
     }
 
+    public Page<MovieResponse> getMovieList(Pageable pageable) {
+        return movieRepository.findAll(pageable)
+                .map(MovieResponse::from);
+    }
 
-    public void insertInitialMovies() {
+    public MovieDetailResponse getMovieDetail(Long id) {
+        Movie movie = findById(id);
+        return MovieDetailResponse.from(movie);
+    }
+
+  public void insertInitialMovies() {
         for (int page = 1; page <= 10; page++) {
             int finalPage = page;
             MovieApiResponse response = webClient.get()
@@ -91,23 +103,10 @@ public class MovieService {
         }
     }
 
-    public List<MovieResponse> getMovies(Pageable pageable) {
-        return movieRepository.findAllByOrderByReleaseDateDesc(pageable).stream()
-                .map(MovieResponse::new)
-                .toList();
-    }
 
-    public MovieDetailResponse getMovieDetail(Long id) {
-        Movie movie= movieRepository.findById(id)
-                .orElseThrow(() -> new MovieNotFoundException(id));
-        return new MovieDetailResponse(movie);
+    public Page<MovieResponse> searchMovies(String keyword, Pageable pageable) {
+        return movieRepository
+                .findByTitleContainingIgnoreCase(keyword, pageable)
+                .map(MovieResponse::from);
     }
-
-    public List<MovieResponse> searchMovies(String keyword) {
-        List<Movie> movies = movieRepository.searchMovies(keyword);
-        return movies.stream()
-                .map(MovieResponse::new)
-                .toList();
-    }
-
 }

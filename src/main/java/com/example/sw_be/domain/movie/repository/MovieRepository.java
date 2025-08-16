@@ -9,11 +9,9 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
+import java.nio.channels.FileChannel;
+
 
 public interface MovieRepository extends JpaRepository<Movie, Long> {
-    Page<Movie> findAllByOrderByReleaseDateDesc(Pageable pageable);
-
-    @Query("SELECT m FROM Movie m " +
-            "WHERE LOWER(m.title) LIKE LOWER(CONCAT('%', :keyword, '%')) ")
-    List<Movie> searchMovies(@Param("keyword") String keyword);
+    Page<Movie> findByTitleContainingIgnoreCase(String keyword, Pageable pageable);
 }
