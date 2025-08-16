@@ -11,7 +11,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDateTime;
 
 @Document(collection = "chatMessages")
-@CompoundIndex(def = "{'chatRoomId': 1, 'timestamp': -1, '_id': -1}")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
