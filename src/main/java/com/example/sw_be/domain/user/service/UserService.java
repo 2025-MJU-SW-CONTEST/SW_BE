@@ -20,7 +20,7 @@ public class UserService {
 
 
         String newNick= userUpdateRequest.getNickname();
-
+      
         if (userRepository.existsByNickName(newNick))
             throw new NicknameDuplicateException(newNick);
 

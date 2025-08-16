@@ -32,4 +32,7 @@ public class Review {
     private User user;
 
 
+    public void update(String content) {
+        this.content= content;
+    }
 }

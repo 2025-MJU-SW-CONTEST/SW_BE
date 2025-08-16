@@ -22,7 +22,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Movie {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
     private Long id;
     private String title;
     private String summary;
@@ -34,8 +34,8 @@ public class Movie {
     @OneToMany(mappedBy = "movie")
     private List<MovieCast> movieCasts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "movie")
-    private List<MovieGenre> movieGenres = new ArrayList<>();
+//    @OneToMany(mappedBy = "movie")
+//    private List<MovieGenre> movieGenres = new ArrayList<>();
 
     @OneToOne(mappedBy = "movie")
     private ChatRoom chatRoom;
@@ -43,6 +43,13 @@ public class Movie {
     @OneToMany(mappedBy = "movie")
     private List<Review> reviews = new ArrayList<>();
 
-    @OneToOne(mappedBy = "movie")
-    private Analysis movieAnalysis;
+    @OneToMany(mappedBy = "movie")
+    private List<Analysis> movieAnalysises= new ArrayList<>();
+
+    public void setMovieCasts(List<MovieCast> casts) {
+        if (casts != null) {
+            casts.forEach(c -> c.setMovie(this));
+            this.movieCasts.addAll(casts);
+        }
+    }
 }
