@@ -43,14 +43,14 @@ public class ChatController {
      * 특정 채팅방(roomId)의 MongoDB 저장 채팅 내역 조회(GET)
      */
     @GetMapping("/history/recent/{roomId}")
-    @Operation(summary = "채팅 초기 히스토리 조회 (시간 기준)")
+    @Operation(summary = "채팅 내역 조회 (현재 시간 기준)")
     public ResponseEntity<List<ChatMessageDocument>> getRecentHistory(@PathVariable Long roomId) {
         var items = mongoService.getRecentHistory(roomId);
         return items.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(items);
     }
 
     @GetMapping("/history/before/{roomId}")
-    @Operation(summary = "채팅 과거 히스토리 조회 (마지막 채팅 ID 기준)")
+    @Operation(summary = "채팅 내역 조회 (마지막 채팅 ID 기준)")
     public ResponseEntity<List<ChatMessageDocument>> getBeforeByChatId(@PathVariable Long roomId,
                                                                        @RequestParam String chatId) {
         var items = mongoService.getBeforeByChatId(roomId, chatId);
