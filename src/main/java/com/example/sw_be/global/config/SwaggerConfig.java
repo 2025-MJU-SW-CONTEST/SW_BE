@@ -13,15 +13,12 @@ import java.util.List;
 @Configuration
 public class SwaggerConfig {
 
-    @Value("${swagger-config.server-url}")
-    private String httpServerUrl;
-
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .components(new Components())
                 .info(apiInfo())
-                .servers(serverList());
+                .servers(List.of(new Server().url("/")));
     }
 
     private Info apiInfo() {
@@ -31,11 +28,4 @@ public class SwaggerConfig {
                 .version("1.0");
     }
 
-    private List<Server> serverList() {
-        return List.of(
-                new Server()
-                        .url(httpServerUrl)
-                        .description("Server")
-        );
-    }
 }
