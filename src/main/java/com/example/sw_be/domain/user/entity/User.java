@@ -35,8 +35,8 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Review> reviews = new ArrayList<>();
 
-    @OneToOne(mappedBy = "user")
-    private Analysis analysis;
+    @OneToMany(mappedBy = "user")
+    private List<Analysis> analyses = new ArrayList<>();
 
     public void changeNickName(String nickName){
         this.nickName= nickName;

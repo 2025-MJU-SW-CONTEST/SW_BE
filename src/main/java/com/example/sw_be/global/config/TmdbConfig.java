@@ -9,8 +9,12 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 public class TmdbConfig {
+
+    @Value("${spring.tmdb.api.token}")
+    String token;
+
     @Bean
-    WebClient tmdbClient(@Value("${spring.tmdb.api.token}") String token) {
+    public WebClient tmdbClient() {
         return WebClient.builder()
                 .baseUrl("https://api.themoviedb.org/3")
                 .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + token)

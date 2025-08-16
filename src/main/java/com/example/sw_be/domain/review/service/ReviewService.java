@@ -80,5 +80,10 @@ public class ReviewService {
         return responses;
     }
 
+    public List<LocalDate> getReviewDatesInMonth(User user, int year, int month) {
+        if (user == null) throw new UnauthenticatedException();
+        return reviewRepository.findReviewDatesInMonth(user, year, month);
+    }
+
 }
 

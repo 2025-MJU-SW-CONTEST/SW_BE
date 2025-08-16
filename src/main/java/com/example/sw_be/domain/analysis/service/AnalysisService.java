@@ -5,11 +5,13 @@ import com.example.sw_be.domain.analysis.dto.request.AnalysisUpdateRequest;
 import com.example.sw_be.domain.analysis.dto.response.AnalysisResponse;
 import com.example.sw_be.domain.analysis.entity.Analysis;
 import com.example.sw_be.domain.analysis.repository.AnalysisRepository;
+import com.example.sw_be.domain.analysisHashtag.service.AnalysisHashtagJob;
 import com.example.sw_be.domain.movie.entity.Movie;
 import com.example.sw_be.domain.movie.service.MovieService;
 import com.example.sw_be.domain.user.entity.User;
 import com.example.sw_be.global.exception.AnalysisAccessDeniedException;
 import com.example.sw_be.global.exception.AnalysisNotFoundException;
+import com.example.sw_be.global.exception.DuplicateAnalysisException;
 import com.example.sw_be.global.exception.UnauthenticatedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,26 +28,31 @@ public class AnalysisService {
 
     private final AnalysisRepository analysisRepository;
     private final MovieService movieService;
+    private final AnalysisHashtagJob hashtagJob;
 
     public AnalysisResponse createAnalysis(AnalysisCreateRequest analysisCreateRequest, User user) {
 
-        if(user== null) throw new UnauthenticatedException();
+        if (user == null) throw new UnauthenticatedException();
+        if (analysisRepository.existsByMovieIdAndUser(analysisCreateRequest.getMovie_id(), user))
+            throw new DuplicateAnalysisException(analysisCreateRequest.getMovie_id());
 
-        Movie movie= movieService.findById(analysisCreateRequest.getMovie_id());
-        Analysis analysis= Analysis.builder()
+        Movie movie = movieService.findById(analysisCreateRequest.getMovie_id());
+        Analysis analysis = Analysis.builder()
                 .content(analysisCreateRequest.getContent())
                 .movie(movie)
                 .user(user)
                 .createdAt(LocalDateTime.now()).build();
-        return new AnalysisResponse(analysisRepository.save(analysis));
+        Analysis savedAnalysis = analysisRepository.save(analysis);
+        hashtagJob.generateForAnalysis(savedAnalysis.getId(), savedAnalysis.getContent());
+        return new AnalysisResponse(savedAnalysis);
     }
 
     public AnalysisResponse updateAnalysis(AnalysisUpdateRequest analysisUpdateRequest, User user) {
 
-        if(user== null) throw new UnauthenticatedException();
+        if (user == null) throw new UnauthenticatedException();
 
-        Long id= analysisUpdateRequest.getAnalysis_id();
-        Analysis analysis= analysisRepository.findById(id)
+        Long id = analysisUpdateRequest.getAnalysis_id();
+        Analysis analysis = analysisRepository.findById(id)
                 .orElseThrow(() -> new AnalysisNotFoundException(id));
 
         if (!analysis.getUser().getUserid().equals(user.getUserid())) throw new AnalysisAccessDeniedException(id);
@@ -56,7 +63,7 @@ public class AnalysisService {
 
 
     public AnalysisResponse getAnalysis(Long id) {
-        Analysis analysis= analysisRepository.findById(id)
+        Analysis analysis = analysisRepository.findById(id)
                 .orElseThrow(() -> new AnalysisNotFoundException(id));
 
         return new AnalysisResponse(analysis);
@@ -65,9 +72,9 @@ public class AnalysisService {
 
     public void deleteAnalysis(Long id, User user) {
 
-        if(user== null) throw new UnauthenticatedException();
+        if (user == null) throw new UnauthenticatedException();
 
-        Analysis analysis= analysisRepository.findById(id)
+        Analysis analysis = analysisRepository.findById(id)
                 .orElseThrow(() -> new AnalysisNotFoundException(id));
 
         if (!analysis.getUser().getUserid().equals(user.getUserid())) throw new AnalysisAccessDeniedException(id);
@@ -76,10 +83,10 @@ public class AnalysisService {
     }
 
     public List<AnalysisResponse> getUserAnalysis(User user) {
-        List<Analysis> analyses= analysisRepository.findByUser(user);
-        List<AnalysisResponse> responses= new ArrayList<>();
+        List<Analysis> analyses = analysisRepository.findByUser(user);
+        List<AnalysisResponse> responses = new ArrayList<>();
 
-        for (Analysis analysis: analyses) responses.add(new AnalysisResponse(analysis));
+        for (Analysis analysis : analyses) responses.add(new AnalysisResponse(analysis));
 
         return responses;
     }
@@ -88,4 +95,5 @@ public class AnalysisService {
         return analysisRepository.findByMovieId(movieId, pageable)
                 .map(AnalysisResponse::new);
     }
+
 }
