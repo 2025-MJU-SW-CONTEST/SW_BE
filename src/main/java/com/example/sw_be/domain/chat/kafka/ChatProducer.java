@@ -11,7 +11,6 @@ public class ChatProducer {
     private final KafkaTemplate<String, ChatMessage> kafkaTemplate;
 
     public void send(ChatMessage msg) {
-        String topicName = "chat-room-" + msg.getChatRoomId();
-        kafkaTemplate.send(topicName, msg.getChatRoomId().toString(), msg);
+        kafkaTemplate.send(ChatTopics.CHAT_MESSAGES, msg.getChatRoomId().toString(), msg);
     }
 }
