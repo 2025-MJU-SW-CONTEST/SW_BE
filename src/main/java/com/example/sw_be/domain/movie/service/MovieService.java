@@ -28,16 +28,6 @@ public class MovieService {
     private final MovieCastService castService;
     private final WebClient tmdbClient;
 
-    @Value("${spring.tmdb.api.token}")
-    private String token;
-
-    private final WebClient webClient= WebClient.builder()
-            .baseUrl("https://api.themoviedb.org/3")
-            .defaultHeader("Authorization", "Bearer "+token)
-            .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
-            .build();
-
-
     public Movie findById(long movieId) {
         return movieRepository.findById(movieId)
                 .orElseThrow(() -> new MovieNotFoundException(movieId));
