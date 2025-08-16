@@ -55,4 +55,13 @@ public class ReviewController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/dates/{year}/{month}")
+    @Operation(summary = "월별 리뷰 작성일 조회")
+    public ResponseEntity<List<LocalDate>> getReviewDatesInMonth(
+            @PathVariable int year,
+            @PathVariable int month,
+            @Parameter(hidden = true) User user) {
+        return ResponseEntity.ok(reviewService.getReviewDatesInMonth(user, year, month));
+    }
+
 }
