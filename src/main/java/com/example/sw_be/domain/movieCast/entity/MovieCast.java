@@ -20,7 +20,7 @@ public class MovieCast {
     private String character;
     private String profile;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "movie_id")
     private Movie movie;
 

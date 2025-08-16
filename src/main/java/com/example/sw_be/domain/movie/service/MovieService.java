@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
@@ -42,7 +43,8 @@ public class MovieService {
         return MovieDetailResponse.from(movie);
     }
 
-  public void insertInitialMovies() {
+    @Transactional
+    public void insertInitialMovies() {
         for (int page = 1; page <= 10; page++) {
             int finalPage = page;
             MovieApiResponse response = tmdbClient.get()
@@ -58,38 +60,40 @@ public class MovieService {
                     .bodyToMono(MovieApiResponse.class)
                     .block();
 
-            if (response != null && response.getResults() != null) {
-                for (MovieApiResponse.MovieDto dto : response.getResults()) {
+            if (response == null || response.getResults() == null) continue;
 
-                    Movie movie = Movie.builder()
-                            .id(dto.getId())
-                            .title(dto.getTitle())
-                            .summary(dto.getOverview())
-                            .rating(dto.getVote_average())
-                            .thumbnailUrl(dto.getPoster_path())
-                            .releaseDate(dto.getRelease_date())
-                            .build();
+            for (MovieApiResponse.MovieDto dto : response.getResults()) {
 
+                if (movieRepository.existsById(dto.getId())) continue;
 
-//                    for (Long genreId : dto.getGenre_ids()) {
-//                        genereRepository.findById(genreId).ifPresent(genre -> {
-//                            MovieGenre mg = MovieGenre.builder()
-//                                    .movie(movie)
-//                                    .genre(genre)
-//                                    .build();
-//                            movie.getMovieGenres().add(mg);
-//                        });
-//                    }
+                Movie movie = Movie.builder()
+                        .id(dto.getId())
+                        .title(dto.getTitle())
+                        .summary(dto.getOverview())
+                        .rating(dto.getVote_average())
+                        .thumbnailUrl(dto.getPoster_path())
+                        .releaseDate(dto.getRelease_date())
+                        .build();
 
-                    List<MovieCast> casts = castService.saveCasts(dto.getId());
-                    movie.setMovieCasts(casts);
-                    movieRepository.save(movie);
-                }
+                movieRepository.save(movie);
+
+                // for (Long genreId : dto.getGenre_ids()) {
+                //     genereRepository.findById(genreId).ifPresent(genre -> {
+                //         MovieGenre mg = MovieGenre.builder()
+                //                 .movie(movie)
+                //                 .genre(genre)
+                //                 .build();
+                //         movie.getMovieGenres().add(mg);
+                //     });
+                // }
+
+                List<MovieCast> casts = castService.saveCasts(dto.getId());
+                casts.forEach(movie::addCast);
+
+                movieRepository.save(movie);
             }
-
         }
     }
-
 
     public Page<MovieResponse> searchMovies(String keyword, Pageable pageable) {
         return movieRepository
