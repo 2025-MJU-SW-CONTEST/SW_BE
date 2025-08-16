@@ -17,6 +17,7 @@ public class CORSConfig implements WebMvcConfigurer {
                 .allowedOrigins("http://localhost:5173", "https://filmate.shop")
                 .allowedMethods("*")
                 .allowedHeaders("*")
+                .exposedHeaders("Authorization")
                 .allowCredentials(true)
                 .maxAge(3600);
     }

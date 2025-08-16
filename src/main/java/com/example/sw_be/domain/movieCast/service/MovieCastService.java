@@ -3,6 +3,7 @@ package com.example.sw_be.domain.movieCast.service;
 import com.example.sw_be.domain.movie.entity.Movie;
 import com.example.sw_be.domain.movieCast.dto.MovieCastsResponse;
 import com.example.sw_be.domain.movieCast.entity.MovieCast;
+import lombok.RequiredArgsConstructor;
 import org.apache.catalina.CredentialHandler;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -12,14 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class MovieCastService {
-    @Value("${spring.tmdb.api.token}")
-    private String token;
 
-    private final WebClient webClient= WebClient.builder()
-            .baseUrl("https://api.themoviedb.org/3")
-            .defaultHeader("Authorization", "Bearer "+token)
-            .build();
+    private final WebClient webClient;
 
     public List<MovieCast> saveCasts(Long id) {
         List<MovieCast> casts= new ArrayList<>();

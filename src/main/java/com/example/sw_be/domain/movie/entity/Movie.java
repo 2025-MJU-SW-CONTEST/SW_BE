@@ -25,14 +25,17 @@ public class Movie {
     @Id
     private Long id;
     private String title;
+    @Column(length = 3000)
     private String summary;
     private Float rating;
     private Integer duration;
     private String thumbnailUrl;
     private LocalDate releaseDate;
 
-    @OneToMany(mappedBy = "movie")
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<MovieCast> movieCasts = new ArrayList<>();
+
 
 //    @OneToMany(mappedBy = "movie")
 //    private List<MovieGenre> movieGenres = new ArrayList<>();
@@ -46,10 +49,16 @@ public class Movie {
     @OneToMany(mappedBy = "movie")
     private List<Analysis> movieAnalysises= new ArrayList<>();
 
-    public void setMovieCasts(List<MovieCast> casts) {
-        if (casts != null) {
-            casts.forEach(c -> c.setMovie(this));
-            this.movieCasts.addAll(casts);
+    public void addCast(MovieCast cast) {
+        if (cast != null) {
+            movieCasts.add(cast);
+            cast.setMovie(this); // FK 세팅
         }
     }
+
+    public void setMovieCasts(List<MovieCast> casts) {
+        movieCasts.clear();
+        if (casts != null) casts.forEach(this::addCast);
+    }
+
 }

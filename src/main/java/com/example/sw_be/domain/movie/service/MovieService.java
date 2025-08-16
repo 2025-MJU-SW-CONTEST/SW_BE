@@ -1,6 +1,5 @@
 package com.example.sw_be.domain.movie.service;
 
-import com.example.sw_be.domain.analysis.entity.Analysis;
 import com.example.sw_be.domain.movie.dto.MovieApiResponse;
 import com.example.sw_be.domain.movie.dto.MovieDetailResponse;
 import com.example.sw_be.domain.movie.dto.MovieResponse;
@@ -11,11 +10,10 @@ import com.example.sw_be.domain.movieCast.service.MovieCastService;
 import com.example.sw_be.global.exception.MovieNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import com.example.sw_be.global.common.PageResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -25,19 +23,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MovieService {
 
-    private static final Logger log = LoggerFactory.getLogger(MovieService.class);
     private final MovieRepository movieRepository;
 //    private final GenreRepository genereRepository;
     private final MovieCastService castService;
-
-    @Value("${spring.tmdb.api.token}")
-    private String token;
-
-    private final WebClient webClient= WebClient.builder()
-            .baseUrl("https://api.themoviedb.org/3")
-            .defaultHeader("Authorization", "Bearer "+token)
-            .build();
-
+    private final WebClient tmdbClient;
 
     public Movie findById(long movieId) {
         return movieRepository.findById(movieId)
@@ -57,7 +46,7 @@ public class MovieService {
   public void insertInitialMovies() {
         for (int page = 1; page <= 10; page++) {
             int finalPage = page;
-            MovieApiResponse response = webClient.get()
+            MovieApiResponse response = tmdbClient.get()
                     .uri(uriBuilder -> uriBuilder
                             .path("/discover/movie")
                             .queryParam("include_adult", false)
@@ -93,9 +82,8 @@ public class MovieService {
 //                        });
 //                    }
 
-                    List<MovieCast> casts =castService.saveCasts(dto.getId());
+                    List<MovieCast> casts = castService.saveCasts(dto.getId());
                     movie.setMovieCasts(casts);
-
                     movieRepository.save(movie);
                 }
             }
