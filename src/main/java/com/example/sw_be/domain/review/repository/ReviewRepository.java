@@ -17,7 +17,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             "WHERE r.user = :user " +
             "AND YEAR(r.createdAt) = :year " +
             "AND MONTH(r.createdAt) = :month")
-    List<LocalDate> findReviewDatesInMonth(@Param("user") User user,
+    List<java.sql.Date> findReviewDatesInMonth(@Param("user") User user,
                                            @Param("year") int year,
                                            @Param("month") int month);
 }
