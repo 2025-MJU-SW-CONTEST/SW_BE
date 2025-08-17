@@ -27,6 +27,7 @@ public class MovieService {
     private final MovieCastService castService;
     @Qualifier("tmdbClient")
     private final WebClient tmdbClient;
+    private final MovieCastService movieCastService;
 
     public Movie findById(long movieId) {
         return movieRepository.findById(movieId)
@@ -40,7 +41,8 @@ public class MovieService {
 
     public MovieDetailResponse getMovieDetail(Long id) {
         Movie movie = findById(id);
-        return MovieDetailResponse.from(movie);
+        var movieCasts = movieCastService.getMovieCasts(id);
+        return MovieDetailResponse.from(movie, movieCasts);
     }
 
     @Transactional

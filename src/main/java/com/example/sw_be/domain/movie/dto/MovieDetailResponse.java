@@ -1,6 +1,7 @@
 package com.example.sw_be.domain.movie.dto;
 
 import com.example.sw_be.domain.movie.entity.Movie;
+import com.example.sw_be.domain.movieCast.dto.MovieCastsResponse;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -16,8 +17,9 @@ public class MovieDetailResponse {
     private String thumbnailUrl;
     private String summary;
     private LocalDate releaseDate;
+    private MovieCastsResponse movieCasts;
 
-    public static MovieDetailResponse from(Movie movie) {
+    public static MovieDetailResponse from(Movie movie, MovieCastsResponse movieCastsResponse) {
         String baseUrl = "https://image.tmdb.org/t/p/w500";
         String url = baseUrl + movie.getThumbnailUrl();
         return MovieDetailResponse.builder()
@@ -27,6 +29,7 @@ public class MovieDetailResponse {
                 .thumbnailUrl(url)
                 .summary(movie.getSummary())
                 .releaseDate(movie.getReleaseDate())
+                .movieCasts(movieCastsResponse)
                 .build();
     }
 }
