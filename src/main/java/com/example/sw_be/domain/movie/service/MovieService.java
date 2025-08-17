@@ -1,5 +1,6 @@
 package com.example.sw_be.domain.movie.service;
 
+import com.example.sw_be.domain.chatRoom.service.ChatRoomService;
 import com.example.sw_be.domain.movie.dto.MovieApiResponse;
 import com.example.sw_be.domain.movie.dto.MovieDetailResponse;
 import com.example.sw_be.domain.movie.dto.MovieResponse;
@@ -28,6 +29,7 @@ public class MovieService {
     @Qualifier("tmdbClient")
     private final WebClient tmdbClient;
     private final MovieCastService movieCastService;
+    private final ChatRoomService chatRoomService;
 
     public Movie findById(long movieId) {
         return movieRepository.findById(movieId)
@@ -68,12 +70,13 @@ public class MovieService {
 
                 if (movieRepository.existsById(dto.getId())) continue;
 
+                String url = "https://image.tmdb.org/t/p/w500" + dto.getPoster_path();
                 Movie movie = Movie.builder()
                         .id(dto.getId())
                         .title(dto.getTitle())
                         .summary(dto.getOverview())
                         .rating(dto.getVote_average())
-                        .thumbnailUrl(dto.getPoster_path())
+                        .thumbnailUrl(url)
                         .releaseDate(dto.getRelease_date())
                         .build();
 
@@ -93,6 +96,7 @@ public class MovieService {
                 casts.forEach(movie::addCast);
 
                 movieRepository.save(movie);
+                chatRoomService.createChatRoom(movie);
             }
         }
     }

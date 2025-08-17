@@ -16,15 +16,12 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChatRoom {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
     private Long id;
 
     @OneToOne
     @JoinColumn(name = "movie_id")
     private Movie movie;
-
-    @ManyToOne @JoinColumn(name = "user_id")
-    private User user;
 
     private LocalDate date;
 }

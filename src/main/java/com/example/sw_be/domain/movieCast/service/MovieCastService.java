@@ -1,5 +1,6 @@
 package com.example.sw_be.domain.movieCast.service;
 
+import com.example.sw_be.domain.movieCast.dto.CastDto;
 import com.example.sw_be.domain.movieCast.dto.MovieCastsResponse;
 import com.example.sw_be.domain.movieCast.entity.MovieCast;
 import com.example.sw_be.domain.movieCast.repository.MovieCastRepository;
@@ -29,11 +30,12 @@ public class MovieCastService {
                 .block();
 
         if (response != null && response.getCast() != null) {
-            for (MovieCastsResponse.CastDto dto : response.getCast()) {
+            for (CastDto dto : response.getCast()) {
+                String url = "https://image.tmdb.org/t/p/w500" + dto.getProfile_path();
                 MovieCast cast = MovieCast.builder()
                         .name(dto.getName())
                         .character(dto.getCharacter())
-                        .profile(dto.getProfile_path())
+                        .profile(url)
                         .build();
 
                 casts.add(cast);
@@ -44,9 +46,9 @@ public class MovieCastService {
 
     public MovieCastsResponse getMovieCasts(Long movieId) {
         List<MovieCast> movieCastList = movieCastRepository.findByMovieId(movieId);
-        List<MovieCastsResponse.CastDto> castDtos = new ArrayList<>();
+        List<CastDto> castDtos = new ArrayList<>();
         for (MovieCast movieCast : movieCastList) {
-            MovieCastsResponse.CastDto castDto = new MovieCastsResponse.CastDto(movieCast);
+            CastDto castDto = new CastDto(movieCast);
             castDtos.add(castDto);
         }
         return new MovieCastsResponse(movieId, castDtos);

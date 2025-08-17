@@ -20,13 +20,11 @@ public class MovieDetailResponse {
     private MovieCastsResponse movieCasts;
 
     public static MovieDetailResponse from(Movie movie, MovieCastsResponse movieCastsResponse) {
-        String baseUrl = "https://image.tmdb.org/t/p/w500";
-        String url = baseUrl + movie.getThumbnailUrl();
         return MovieDetailResponse.builder()
                 .id(movie.getId())
                 .title(movie.getTitle())
                 .rating(movie.getRating())
-                .thumbnailUrl(url)
+                .thumbnailUrl(movie.getThumbnailUrl())
                 .summary(movie.getSummary())
                 .releaseDate(movie.getReleaseDate())
                 .movieCasts(movieCastsResponse)

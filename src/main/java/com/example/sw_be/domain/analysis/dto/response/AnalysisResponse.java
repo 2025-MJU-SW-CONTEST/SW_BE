@@ -19,9 +19,12 @@ public class AnalysisResponse {
         this.analysis_id= analysis.getId();
         this.content= analysis.getContent();
         this.createdAt= analysis.getCreatedAt();
-        this.hashtags = analysis.getHashtags()
-                .stream()
-                .map(AnalysisHashtag::getHashtag).toList();
+        this.hashtags = analysis.getHashtags() == null
+                ? List.of()
+                : analysis.getHashtags().stream()
+                .map(AnalysisHashtag::getHashtag)
+                .toList();
+
     }
 
 }
