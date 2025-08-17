@@ -47,6 +47,7 @@ public class AuthService {
 
     public UserResponse signup(SignupRequest signupRequest, String token, HttpServletResponse httpServletResponse) {
         String email= jwtUtil.getUsername(token);
+        log.info("가입 요청 닉네임: {}", signupRequest.getNickname());
 
         if(userRepository.existsByEmail(email)) throw new RuntimeException("이미 존재합니다.");
         User newUser = User.builder().nickName(signupRequest.getNickname())

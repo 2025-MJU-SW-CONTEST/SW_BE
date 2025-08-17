@@ -76,7 +76,7 @@ public class ReviewService {
         List<Review> reviews = reviewRepository.findByUserAndDate(user, date);
         List<ReviewResponse> responses= new ArrayList<>();
 
-        if (reviews.isEmpty()) throw new ReviewNotFoundException(date);
+//        if (reviews.isEmpty()) throw new ReviewNotFoundException(date);
 
         for(Review review: reviews) responses.add(new ReviewResponse(review));
         return responses;
