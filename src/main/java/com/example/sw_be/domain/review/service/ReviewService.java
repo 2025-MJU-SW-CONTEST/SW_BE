@@ -41,7 +41,7 @@ public class ReviewService {
 //                .rating(reviewCreateRequest.getRating())
 //                .movie(movie)
                 .user(user)
-                .createdAt(LocalDateTime.now()).build();
+                .createdAt(reviewCreateRequest.getDate().atStartOfDay()).build();
         return new ReviewResponse(review);
     }
 
