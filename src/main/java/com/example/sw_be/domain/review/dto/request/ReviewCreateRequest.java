@@ -8,7 +8,8 @@ import java.time.LocalDateTime;
 @Getter
 public class ReviewCreateRequest {
 
+    private String title;
     private String content;
-    private Float rating;
-    private long movie_id;
+//    private Float rating;
+//    private long movie_id;
 }

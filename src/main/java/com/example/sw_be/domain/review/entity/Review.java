@@ -19,13 +19,14 @@ public class Review {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String title;
     private String content;
-    private Float rating;
+//    private Float rating;
     private LocalDateTime createdAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "movie_id")
-    private Movie movie;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "movie_id")
+//    private Movie movie;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
