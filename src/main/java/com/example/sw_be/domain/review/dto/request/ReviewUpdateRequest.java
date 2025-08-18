@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 @Getter
 public class ReviewUpdateRequest {
     private Long id;
+    private String title;
     private String content;
-    private Float rating;
-    private long movie_id;
 }
