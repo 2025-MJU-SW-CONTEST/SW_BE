@@ -15,6 +15,10 @@ public class AnalysisResponse {
     private List<String> hashtags;
     private LocalDateTime createdAt;
 
+    private Long userId;
+    private String nickName;
+    private String profileImg;
+
     public AnalysisResponse(Analysis analysis){
         this.analysis_id= analysis.getId();
         this.content= analysis.getContent();
@@ -22,6 +26,10 @@ public class AnalysisResponse {
         this.hashtags = analysis.getHashtags()
                 .stream()
                 .map(AnalysisHashtag::getHashtag).toList();
+
+        this.userId = analysis.getUser().getUserid();
+        this.nickName = analysis.getUser().getNickName();
+        this.profileImg = analysis.getUser().getProfileImg();
     }
 
 }
