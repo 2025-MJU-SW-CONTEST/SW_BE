@@ -21,10 +21,10 @@ public class AiChatController {
 
 
     @Operation(
-            summary = "AI 채팅 조회",
-            description = "제목 검색 또는 일반 채팅을 조회합니다. " +
+            summary = "AI 채팅 전송",
+            description = "제목 검색 또는 일반 채팅을 전송합니다. " +
                     "제목 검색용 파라미터(k, title)가 존재하면 제목 검색을, " +
-                    "그렇지 않으면 일반 채팅 조회를 수행합니다."
+                    "그렇지 않으면 일반 채팅 전송를 수행합니다."
     )
     @PostMapping("/chats/{aiChatRoom-Id}")
     public ResponseEntity<?> getChats(

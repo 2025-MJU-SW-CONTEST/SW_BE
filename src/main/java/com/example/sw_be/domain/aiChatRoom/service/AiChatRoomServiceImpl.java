@@ -18,9 +18,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class AiChatRoomServiceImpl implements AiChatRoomService{
     private final AiChatRoomRepository aiChatRoomRepository;
@@ -78,6 +79,23 @@ public class AiChatRoomServiceImpl implements AiChatRoomService{
                 .build();
     }
 
+    @Override
+    public AiChatRoomRes.RecentAiChatRoom getRecentAiChatRoom(User user) {
+        Optional<AiChatRoom> recentRoomOpt = aiChatRoomRepository
+                .findTopByUserOrderByCreatedAtDesc(user);
+
+        if (recentRoomOpt.isEmpty()) {
+            return AiChatRoomRes.RecentAiChatRoom.builder()
+                    .aiChatRoomId(0L)
+                    .build();
+        }
+
+        AiChatRoom recentAiChatRoom = recentRoomOpt.get();
+
+        return AiChatRoomRes.RecentAiChatRoom.builder()
+                .aiChatRoomId(recentAiChatRoom.getId())
+                .build();
+    }
 
 
 }
