@@ -15,6 +15,7 @@ import com.example.sw_be.global.exception.AnalysisNotFoundException;
 import com.example.sw_be.global.exception.ReviewNotFoundException;
 import com.example.sw_be.global.exception.UnauthenticatedException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.awt.image.renderable.RenderableImage;
@@ -25,6 +26,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ReviewService {
 
     private final MovieService movieService;
@@ -42,6 +44,8 @@ public class ReviewService {
 //                .movie(movie)
                 .user(user)
                 .createdAt(reviewCreateRequest.getDate().atStartOfDay()).build();
+
+        reviewRepository.save(review);
         return new ReviewResponse(review);
     }
 
