@@ -20,6 +20,7 @@ public class Review {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
+    @Column(length = 1500)
     private String content;
 //    private Float rating;
     private LocalDateTime createdAt;

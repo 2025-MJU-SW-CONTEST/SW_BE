@@ -22,6 +22,7 @@ public class Analysis {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(length = 1500)
     private String content;
     private LocalDateTime createdAt;
 
