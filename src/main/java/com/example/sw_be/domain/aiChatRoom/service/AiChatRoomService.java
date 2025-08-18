@@ -7,4 +7,6 @@ public interface AiChatRoomService {
     AiChatRoomRes.NewAiChatRoom createNewAiChatRoom(User user);
 
     AiChatRoomRes.AiChatRoomHistory getAiChatRoomHistory(User user,Long aiChatRoomId, int page, int size);
+
+    AiChatRoomRes.RecentAiChatRoom getRecentAiChatRoom(User user);
 }

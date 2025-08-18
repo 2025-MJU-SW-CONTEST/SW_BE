@@ -2,6 +2,7 @@ package com.example.sw_be.domain.aiChatRoom.cotroller;
 
 import com.example.sw_be.domain.aiChatRoom.dto.AiChatRoomRes;
 import com.example.sw_be.domain.aiChatRoom.service.AiChatRoomService;
+import com.example.sw_be.domain.chatRoom.entity.ChatRoom;
 import com.example.sw_be.domain.user.entity.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -44,5 +45,15 @@ public class AiChatRoomController {
 
 
 
+    @Operation(
+            summary = "가장 최근 생성한 챗봇 채팅방 아이디 조회",
+            description = "가장 최근 생성한 챗봇 채팅방 아이디 조회를 조회합니다. 생성한 적이 없다면, 0을 반환합니다."
+    )
+    @GetMapping("/recent")
+    public ResponseEntity<AiChatRoomRes.RecentAiChatRoom> getRecentAiChatRoom(@Parameter(hidden = true) User user) {
+
+        return ResponseEntity.ok(aiChatRoomService.getRecentAiChatRoom(user));
+
+    }
 
 }

@@ -35,4 +35,10 @@ public class AiChatRoomRes {
         String contents;
         String createdAt;
     }
+
+    @Data
+    @Builder
+    public static class RecentAiChatRoom {
+        Long aiChatRoomId;
+    }
 }
