@@ -16,6 +16,14 @@ public class ChatReq {
         private Long chat_room_id;
     }
 
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class AddAnalysisToLLM {
+        private Long movie_id;
+        private String text;
+    }
+
 
     @Data
     @NoArgsConstructor
@@ -31,5 +39,12 @@ public class ChatReq {
         private String text;
         @Schema(description = "현재 AI 채팅룸 ID", example = "1", required = true)
         private Long aiChatRoomId;
+    }
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class addAnalysis {
+        private Long movie_id;
+        private String text;
     }
 }
