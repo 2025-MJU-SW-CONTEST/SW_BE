@@ -3,7 +3,6 @@ package com.example.sw_be.domain.user.entity;
 
 import com.example.sw_be.domain.analysis.entity.Analysis;
 import com.example.sw_be.domain.review.entity.Review;
-import com.example.sw_be.domain.userChatRoom.entity.UserChatRoom;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,9 +27,6 @@ public class User {
     private String profileImg;
     private String role;
     private String password;
-
-    @OneToMany(mappedBy = "user")
-    private List<UserChatRoom> userChatRooms = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private List<Review> reviews = new ArrayList<>();

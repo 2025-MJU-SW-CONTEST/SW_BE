@@ -32,7 +32,7 @@ public class MovieController {
     @Operation(summary = "영화 리스트 조회", description = "페이지 단위로 영화 리스트 조회")
     public ResponseEntity<PageResponse<MovieResponse>> getMovieList(@RequestParam(defaultValue = "0") int page,
                                                                     @RequestParam(defaultValue = "10") int size) {
-        Page<MovieResponse> movies = movieService.getMovieList(PageUtil.defaultPage(page, size));
+        Page<MovieResponse> movies = movieService.getMovieList(PageUtil.defaultPage(page, size, "releaseDate"));
         return ResponseEntity.ok(new PageResponse<>(movies));
     }
 

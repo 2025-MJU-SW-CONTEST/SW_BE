@@ -6,12 +6,19 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ReviewRepository extends JpaRepository<Review, Long> {
-    @Query("SELECT r FROM Review r WHERE r.user = :user AND DATE(r.createdAt) = :date")
-    List<Review> findByUserAndDate(@Param("user") User user, @Param("date") LocalDate date);
+    @Query("SELECT r FROM Review r " +
+            "WHERE r.user = :user " +
+            "AND r.createdAt >= :start " +
+            "AND r.createdAt < :end")
+    List<Review> findByUserAndDate(
+            @Param("user") User user,
+            @Param("start") LocalDateTime start,
+            @Param("end") LocalDateTime end);
+
 
     @Query("SELECT DISTINCT DATE(r.createdAt) FROM Review r " +
             "WHERE r.user = :user " +

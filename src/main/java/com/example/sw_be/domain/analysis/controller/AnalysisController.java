@@ -55,7 +55,7 @@ public class AnalysisController {
     public ResponseEntity<PageResponse<AnalysisResponse>> getMovieList(@PathVariable Long id,
                                                                        @RequestParam(defaultValue = "0") int page,
                                                                        @RequestParam(defaultValue = "10") int size) {
-        Page<AnalysisResponse> analysisList = analysisService.getAnalysisList(id, PageUtil.defaultPage(page, size));
+        Page<AnalysisResponse> analysisList = analysisService.getAnalysisList(id, PageUtil.defaultPage(page, size, "createdAt"));
         return ResponseEntity.ok(new PageResponse<>(analysisList));
     }
 }

@@ -15,6 +15,7 @@ import com.example.sw_be.global.exception.AnalysisNotFoundException;
 import com.example.sw_be.global.exception.ReviewNotFoundException;
 import com.example.sw_be.global.exception.UnauthenticatedException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.awt.image.renderable.RenderableImage;
@@ -25,6 +26,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ReviewService {
 
     private final MovieService movieService;
@@ -33,13 +35,17 @@ public class ReviewService {
     public ReviewResponse createReview(ReviewCreateRequest reviewCreateRequest, User user) {
         if(user== null) throw new UnauthenticatedException();
 
-        Movie movie= movieService.findById(reviewCreateRequest.getMovie_id());
+//        Movie movie= movieService.findById(reviewCreateRequest.getMovie_id());
 
-        Review review= Review.builder().content(reviewCreateRequest.getContent())
-                .rating(reviewCreateRequest.getRating())
-                .movie(movie)
+        Review review= Review.builder()
+                .title(reviewCreateRequest.getTitle())
+                .content(reviewCreateRequest.getContent())
+//                .rating(reviewCreateRequest.getRating())
+//                .movie(movie)
                 .user(user)
-                .createdAt(LocalDateTime.now()).build();
+                .createdAt(reviewCreateRequest.getDate().atStartOfDay()).build();
+
+        reviewRepository.save(review);
         return new ReviewResponse(review);
     }
 
@@ -52,7 +58,7 @@ public class ReviewService {
 
         if (!review.getUser().getUserid().equals(user.getUserid())) throw new AnalysisAccessDeniedException(id);
 
-        review.update(review.getContent());
+        review.update(review.getTitle(), review.getContent());
         return new ReviewResponse(review);
     }
 
@@ -71,10 +77,12 @@ public class ReviewService {
     public List<ReviewResponse> getReview(LocalDate date, User user) {
         if (user == null) throw new UnauthenticatedException();
 
-        List<Review> reviews = reviewRepository.findByUserAndDate(user, date);
+        List<Review> reviews = reviewRepository.findByUserAndDate(user, date.atStartOfDay()
+                ,date.plusDays(1).atStartOfDay());
+
         List<ReviewResponse> responses= new ArrayList<>();
 
-        if (reviews.isEmpty()) throw new ReviewNotFoundException(date);
+//        if (reviews.isEmpty()) throw new ReviewNotFoundException(date);
 
         for(Review review: reviews) responses.add(new ReviewResponse(review));
         return responses;

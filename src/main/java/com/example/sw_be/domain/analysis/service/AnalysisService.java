@@ -44,7 +44,7 @@ public class AnalysisService {
                 .createdAt(LocalDateTime.now()).build();
         Analysis savedAnalysis = analysisRepository.save(analysis);
         hashtagJob.generateForAnalysis(savedAnalysis.getId(), savedAnalysis.getContent());
-        return new AnalysisResponse(savedAnalysis);
+        return new AnalysisResponse(analysis);
     }
 
     public AnalysisResponse updateAnalysis(AnalysisUpdateRequest analysisUpdateRequest, User user) {

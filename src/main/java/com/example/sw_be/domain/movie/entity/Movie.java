@@ -43,8 +43,8 @@ public class Movie {
     @OneToOne(mappedBy = "movie")
     private ChatRoom chatRoom;
 
-    @OneToMany(mappedBy = "movie")
-    private List<Review> reviews = new ArrayList<>();
+//    @OneToMany(mappedBy = "movie")
+//    private List<Review> reviews = new ArrayList<>();
 
     @OneToMany(mappedBy = "movie")
     private List<Analysis> movieAnalysises= new ArrayList<>();

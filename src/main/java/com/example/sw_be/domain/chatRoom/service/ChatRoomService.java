@@ -3,11 +3,14 @@ package com.example.sw_be.domain.chatRoom.service;
 
 import com.example.sw_be.domain.chatRoom.entity.ChatRoom;
 import com.example.sw_be.domain.chatRoom.repository.ChatRoomRepository;
+import com.example.sw_be.domain.movie.entity.Movie;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.concurrent.ExecutionException;
 @Service
@@ -30,6 +33,19 @@ public class ChatRoomService {
         }
 
         return savedRoom;
+    }
+
+    @Transactional
+    public void createChatRoom(Movie movie) {
+        if(chatRoomRepository.existsByMovieId(movie.getId()))
+            return;
+
+        ChatRoom chatRoom = ChatRoom.builder()
+                .id(movie.getId())
+                .movie(movie)
+                .date(LocalDate.now())
+                .build();
+        chatRoomRepository.save(chatRoom);
     }
 }
    
