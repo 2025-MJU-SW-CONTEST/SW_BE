@@ -33,8 +33,8 @@ public class AnalysisService {
     public AnalysisResponse createAnalysis(AnalysisCreateRequest analysisCreateRequest, User user) {
 
         if (user == null) throw new UnauthenticatedException();
-        if (analysisRepository.existsByMovieIdAndUser(analysisCreateRequest.getMovie_id(), user))
-            throw new DuplicateAnalysisException(analysisCreateRequest.getMovie_id());
+//        if (analysisRepository.existsByMovieIdAndUser(analysisCreateRequest.getMovie_id(), user))
+//            throw new DuplicateAnalysisException(analysisCreateRequest.getMovie_id());
 
         Movie movie = movieService.findById(analysisCreateRequest.getMovie_id());
         Analysis analysis = Analysis.builder()
