@@ -18,8 +18,6 @@ public class AiChatController {
     private final AiChatService aiChatService;
 
 
-
-
     @Operation(
             summary = "AI 채팅 전송",
             description = "제목 검색 또는 일반 채팅을 전송합니다. " +
@@ -41,6 +39,22 @@ public class AiChatController {
             return ResponseEntity.ok(aiChatService.getChats(user, request.getMovieId(), request.getText(), aiChatRoomId));
         }
     }
+
+
+    @Operation(
+            summary = "사용자 해석 데이터 LLM에 추가",
+            description = "사용자가 작성한 영화 해석을 LLM에 추가합니다. 추후 프롬프트에 사용됩니다."
+    )
+    @PostMapping("analysis")
+    public ResponseEntity<Void> analysis(
+            @Parameter(hidden = true) User user,
+            @RequestBody ChatReq.addAnalysis request) {
+
+        aiChatService.addAnalysisToLLM(request.getMovie_id(), request.getText());
+        return ResponseEntity.noContent().build();
+
+    }
+
 
 
 }

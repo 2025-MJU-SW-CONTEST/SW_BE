@@ -14,4 +14,5 @@ public interface AiChatService {
 
     AiChat createAndSaveChat(AiChatRoom aiChatRoom, ChatRole role, String contents);
 
+    void addAnalysisToLLM(Long movieId, String text);
 }

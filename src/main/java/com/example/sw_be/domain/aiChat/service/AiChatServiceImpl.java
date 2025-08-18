@@ -1,5 +1,6 @@
 package com.example.sw_be.domain.aiChat.service;
 
+import com.example.sw_be.domain.aiChat.dto.req.ChatReq;
 import com.example.sw_be.domain.aiChat.dto.req.ChatReq.RagQueryRequest;
 import com.example.sw_be.domain.aiChat.dto.res.ChatRes;
 import com.example.sw_be.domain.aiChat.dto.res.SearchTitles;
@@ -23,6 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
+
+import static com.example.sw_be.domain.aiChat.dto.req.ChatReq.*;
 
 
 @Service
@@ -123,6 +126,26 @@ public class AiChatServiceImpl implements AiChatService {
                 .build();
 
         return aiChatRepository.save(chat);
+    }
+
+    @Override
+    @Transactional
+    public void addAnalysisToLLM(Long movieId, String text) {
+        // FastAPI URL
+        String url = "http://13.125.70.2:8000/rag/analysis";
+
+        // 요청 body 생성
+        AddAnalysisToLLM requestBody = new AddAnalysisToLLM(movieId, text);
+
+        // HTTP 헤더 설정
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<AddAnalysisToLLM> request = new HttpEntity<>(requestBody, headers);
+
+        // POST 요청 보내기
+        String result = restTemplate.postForObject(url, request, String.class);
+
     }
 
 }
