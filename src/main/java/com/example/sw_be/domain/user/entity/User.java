@@ -28,10 +28,16 @@ public class User {
     private String role;
     private String password;
 
-    @OneToMany(mappedBy = "user")
+    @Builder.Default
+    @OneToMany(mappedBy = "user",
+            cascade = CascadeType.REMOVE,
+            orphanRemoval = true)
     private List<Review> reviews = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @Builder.Default
+    @OneToMany(mappedBy = "user",
+            cascade = CascadeType.REMOVE,
+            orphanRemoval = true)
     private List<Analysis> analyses = new ArrayList<>();
 
     public void changeNickName(String nickName){
