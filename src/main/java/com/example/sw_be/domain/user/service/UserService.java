@@ -8,6 +8,7 @@ import com.example.sw_be.global.exception.NicknameDuplicateException;
 import com.example.sw_be.global.exception.UnauthenticatedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +30,7 @@ public class UserService {
         return new UserResponse(user);
     }
 
+    @Transactional
     public void deleteUser(User user) {
         if (user == null) throw new UnauthenticatedException();
         userRepository.delete(user);
