@@ -78,7 +78,28 @@ public class AiChatServiceImpl implements AiChatService {
         if (!aiChatRoomRepository.existsById(aiChatRoomId)) {
             throw new AiChatRoomNotFoundException(aiChatRoomId);
         }
+        AiChatRoom aiChatRoom = aiChatRoomRepository.findById(aiChatRoomId).orElseThrow(() -> new AiChatRoomNotFoundException(aiChatRoomId));
 
+
+        if (text.equals("yes_sw_be")) {
+            createAndSaveChat(aiChatRoom, ChatRole.AI, "yes");
+            // Chat 객체로 변환 후 반환
+            return ChatRes.Chat.builder()
+                    .content("yes")
+                    .aiChatRoomId(aiChatRoomId)
+                    .createdAt(LocalDateTime.now())
+                    .build();
+
+        }
+        if (text.equals("no_sw_be")) {
+            createAndSaveChat(aiChatRoom, ChatRole.AI, "no");
+            // Chat 객체로 변환 후 반환
+            return ChatRes.Chat.builder()
+                    .content("yes")
+                    .aiChatRoomId(aiChatRoomId)
+                    .createdAt(LocalDateTime.now())
+                    .build();
+        }
 
         // FastAPI URL
         String url = "http://13.125.70.2:8000/rag/query";
@@ -101,7 +122,6 @@ public class AiChatServiceImpl implements AiChatService {
         String responseStr = restTemplate.postForObject(url, request, String.class);
 
         //채팅 기록 저장
-        AiChatRoom aiChatRoom = aiChatRoomRepository.findById(aiChatRoomId).orElseThrow(() -> new AiChatRoomNotFoundException(aiChatRoomId));
 
 
         createAndSaveChat(aiChatRoom, ChatRole.USER, text);
