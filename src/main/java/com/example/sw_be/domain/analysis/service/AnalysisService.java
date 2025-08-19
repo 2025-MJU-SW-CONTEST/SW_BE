@@ -57,7 +57,7 @@ public class AnalysisService {
 
         if (!analysis.getUser().getUserid().equals(user.getUserid())) throw new AnalysisAccessDeniedException(id);
 
-        analysis.update(analysis.getContent());
+        analysis.update(analysisUpdateRequest.getContent());
         analysisRepository.save(analysis);
         return new AnalysisResponse(analysis);
     }

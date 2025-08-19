@@ -58,7 +58,8 @@ public class ReviewService {
 
         if (!review.getUser().getUserid().equals(user.getUserid())) throw new AnalysisAccessDeniedException(id);
 
-        review.update(review.getTitle(), review.getContent());
+        review.update(reviewUpdateRequest.getTitle(), reviewUpdateRequest.getContent());
+        reviewRepository.save(review);
         return new ReviewResponse(review);
     }
 
@@ -71,7 +72,7 @@ public class ReviewService {
                 .orElseThrow(() -> new ReviewNotFoundException(id));
 
         if (!review.getUser().getUserid().equals(user.getUserid())) throw new AnalysisAccessDeniedException(id);
-
+        reviewRepository.delete(review);
     }
 
     public List<ReviewResponse> getReview(LocalDate date, User user) {
