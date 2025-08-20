@@ -4,10 +4,13 @@ import com.example.sw_be.domain.aiChatRoom.entity.AiChatRoom;
 import com.example.sw_be.domain.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface AiChatRoomRepository extends JpaRepository<AiChatRoom, Long> {
     Optional<AiChatRoom> findTopByUserOrderByCreatedAtDesc(User user);
 
-    void deleteAllByUser(User user);
+//    void deleteAllByUser(User user);
+
+    List<AiChatRoom> findAllByUser(User user);
 }

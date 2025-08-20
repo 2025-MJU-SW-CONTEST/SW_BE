@@ -10,4 +10,6 @@ public interface AiChatRepository extends JpaRepository<AiChat, Long> {
     Page<AiChat> findByAiChatRoom(AiChatRoom aiChatRoom, Pageable pageable);
 
     Page<AiChat> findByAiChatRoomId(Long aiChatRoomId, Pageable pageable);
+
+    void deleteAllByAiChatRoom(AiChatRoom room);
 }
