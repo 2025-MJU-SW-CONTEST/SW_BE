@@ -1,5 +1,7 @@
 package com.example.sw_be.domain.user.service;
 
+import com.example.sw_be.domain.aiChat.repository.AiChatRepository;
+import com.example.sw_be.domain.aiChatRoom.resporitory.AiChatRoomRepository;
 import com.example.sw_be.domain.user.dto.request.UserUpdateRequest;
 import com.example.sw_be.domain.user.dto.response.UserResponse;
 import com.example.sw_be.domain.user.entity.User;
@@ -14,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-
+    private final AiChatRoomRepository aiChatRoomRepository;
 
     public UserResponse changeNickname(UserUpdateRequest userUpdateRequest, User user) {
         if (user == null) throw new UnauthenticatedException();
@@ -33,6 +35,7 @@ public class UserService {
     @Transactional
     public void deleteUser(User user) {
         if (user == null) throw new UnauthenticatedException();
+        aiChatRoomRepository.deleteAllByUser(user);
         userRepository.delete(user);
     }
 }

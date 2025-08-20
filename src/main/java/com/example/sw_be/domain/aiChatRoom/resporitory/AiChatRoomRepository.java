@@ -8,4 +8,6 @@ import java.util.Optional;
 
 public interface AiChatRoomRepository extends JpaRepository<AiChatRoom, Long> {
     Optional<AiChatRoom> findTopByUserOrderByCreatedAtDesc(User user);
+
+    void deleteAllByUser(User user);
 }
