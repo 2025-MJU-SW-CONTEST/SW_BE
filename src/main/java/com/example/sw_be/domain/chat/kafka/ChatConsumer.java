@@ -4,6 +4,7 @@ import com.example.sw_be.domain.chat.dto.ChatMessage;
 import com.example.sw_be.domain.chat.entity.ChatMessageDocument;
 import com.example.sw_be.domain.chat.repository.ChatMessageRepository;
 import com.example.sw_be.domain.chatRoom.repository.ChatRoomRepository;
+import com.example.sw_be.domain.user.entity.User;
 import com.example.sw_be.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,11 +27,13 @@ public class ChatConsumer {
                 msg.getChatRoomId(), msg.getUserId(), msg.getMessage());
 
         roomRepo.findById(msg.getChatRoomId()).orElseThrow();
-        userRepo.findById(msg.getUserId()).orElseThrow();
+        User user = userRepo.findById(msg.getUserId()).orElseThrow();
 
         ChatMessageDocument doc = ChatMessageDocument.builder()
                 .chatRoomId(msg.getChatRoomId())
                 .userId(msg.getUserId())
+                .nickName(user.getNickName())
+                .profileImg(user.getProfileImg())
                 .message(msg.getMessage())
                 .timestamp(msg.getTimestamp())
                 .build();

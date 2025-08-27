@@ -22,4 +22,7 @@ public class ChatMessageDocument {
     private Long userId;
     private String message;
     private LocalDateTime timestamp;
+    //user
+    private String nickName;
+    private String profileImg;
 }
